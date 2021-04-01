@@ -35,7 +35,9 @@ class _QuranSectionState extends State<QuranSection> {
                     Stack(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.3,
+                          height: orientation == Orientation.portrait
+                              ? MediaQuery.of(context).size.height * 0.3
+                              : MediaQuery.of(context).size.height * 0.4,
                           color: Colors.blueAccent,
                           child: Image.asset(
                             'assets/home_screen/main_frame.jpg',
@@ -47,19 +49,23 @@ class _QuranSectionState extends State<QuranSection> {
                             child: Column(
                           children: [
                             Padding(
-                                padding: EdgeInsets.only(top: 70),
+                                padding: orientation == Orientation.portrait
+                                    ? EdgeInsets.only(top: 70)
+                                    : EdgeInsets.only(top: 5),
                                 child: Text('ISHA',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 40))),
                             Padding(
-                                padding: EdgeInsets.only(top: 10),
+                                padding: orientation == Orientation.portrait
+                                    ? EdgeInsets.only(top: 10)
+                                    : EdgeInsets.only(top: 0),
                                 child: Text(
                                     snapshot.data.data.meta.offset.isha
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 30))),
-                            Container(
-                                padding: EdgeInsets.only(left: 100),
+                            SizedBox(
+                                width: 200,
                                 child: ListTile(
                                   leading: Icon(
                                     Icons.location_on,
@@ -71,13 +77,13 @@ class _QuranSectionState extends State<QuranSection> {
                                           color: Colors.white, fontSize: 15)),
                                 ))
                           ],
-                        ))
+                        )),
                       ],
                     ),
                     Container(
                         height: orientation == Orientation.portrait
                             ? MediaQuery.of(context).size.height * 0.1
-                            : MediaQuery.of(context).size.height * 0.2,
+                            : MediaQuery.of(context).size.height * 0.14,
                         color: HexColor('#2c2b3b'),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -93,33 +99,35 @@ class _QuranSectionState extends State<QuranSection> {
                                 alignment: Alignment.topCenter,
                                 width: MediaQuery.of(context).size.width * 0.6,
                                 child: Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 20, bottom: 10),
-                                  child: ListTile(
-                                      title: Text(
-                                          snapshot.data.data.date.hijri.month
-                                                  .en +
-                                              ' ' +
-                                              snapshot
-                                                  .data.data.date.hijri.year,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20)),
-                                      subtitle: Center(
-                                          child: Text(
-                                        '  ' +
+                                    padding:
+                                        EdgeInsets.only(left: 20, bottom: 10),
+                                    child: SizedBox(
+                                      width: 200,
+                                      child: ListTile(
+                                          title: Text(
+                                              snapshot.data.data.date.hijri
+                                                      .month.en +
+                                                  ' ' +
+                                                  snapshot.data.data.date.hijri
+                                                      .year,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20)),
+                                          subtitle: Center(
+                                              child: Text(
                                             snapshot
                                                 .data.data.date.gregorian.date,
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 14),
-                                      )),
-                                      trailing: Image.asset(
-                                        'assets/home_screen/today.png',
-                                        height: 30,
-                                        width: 20,
-                                        color: HexColor('#16a884'),
-                                      )),
-                                )),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14),
+                                          )),
+                                          trailing: Image.asset(
+                                            'assets/home_screen/today.png',
+                                            height: 30,
+                                            width: 20,
+                                            color: HexColor('#16a884'),
+                                          )),
+                                    ))),
                             Container(
                                 alignment: Alignment.centerRight,
                                 child: Icon(
