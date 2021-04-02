@@ -99,12 +99,6 @@ class QiblahCompassWidget extends StatefulWidget {
 class _QiblahCompassWidgetState extends State<QiblahCompassWidget> {
   @override
   Widget build(BuildContext context) {
-    // For Orientation Set to Ptrait
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    var _platformBrightness = Theme.of(context).brightness;
     return StreamBuilder(
       stream: FlutterQiblah.qiblahStream,
       builder: (_, AsyncSnapshot<QiblahDirection> snapshot) {
