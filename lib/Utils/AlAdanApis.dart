@@ -5,21 +5,25 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 
 class AlAdanAPI {
-  static double pLat;
-  static double pLong;
-
-  Data list;
+// initiize the Longitutude and latittude
+  static double pLat = 0.0;
+  static double pLong = 0.0;
+// calling the model
+  Data list = new Data();
 
   Future getnimazSchedule() async {
-    final position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
+    // uuse for get current location
+    final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium);
 
     pLat = position.latitude;
     pLong = position.longitude;
 
     String date = DateTime.now().toIso8601String();
-    int method = 4;
-
+    // method 4 for fatching the region
+    int method = 4; //
+    // Api number 1 from the aladhan.com/prayer_time , and I pick 11 uber api
+    // bcz its contains the date, Latitude and ongitude that is used for get location
     final url =
         "http://api.aladhan.com/v1/timings/$date?latitude=$pLat&longitude=$pLong&method=$method";
 

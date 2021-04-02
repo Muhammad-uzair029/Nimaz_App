@@ -1,5 +1,5 @@
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/More.dart';
-import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla.dart';
+import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla/Qibla.dart';
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Quran.dart';
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Today.dart';
 
@@ -19,6 +19,7 @@ class _MainPageState extends State<MainPage> {
   final Color navBarColor = HexColor('#2a2b3d');
   @override
   Widget build(BuildContext context) {
+    // persistant Tab change the Style olor and items, screens
     return PersistentTabView(
       context,
       controller: _controller,
@@ -55,10 +56,12 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
+// Screens
 List<Widget> _buildScreens() {
-  return [Today(), Qibla(), QuranSection(), More()];
+  return [Today(), QiblaSection(), QuranSection(), More()];
 }
 
+// Botton Nav bar name, icons, that used above
 List<PersistentBottomNavBarItem> _navBarsItems() {
   return [
     PersistentBottomNavBarItem(

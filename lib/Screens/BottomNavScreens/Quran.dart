@@ -1,11 +1,6 @@
-import 'package:Nimaz_App_Demo/Model/data.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:hexcolor/hexcolor.dart';
 import 'package:Nimaz_App_Demo/Utils/AlAdanApis.dart';
-import 'package:geolocator/geolocator.dart';
 
 class QuranSection extends StatefulWidget {
   @override
@@ -13,6 +8,7 @@ class QuranSection extends StatefulWidget {
 }
 
 class _QuranSectionState extends State<QuranSection> {
+  //Calling APi Class
   AlAdanAPI _alAAdanapi = new AlAdanAPI();
 
   @override
@@ -32,6 +28,8 @@ class _QuranSectionState extends State<QuranSection> {
                 return Container(
                     child: Column(
                   children: <Widget>[
+                    // Stack of Above Image, Isha text, Adnd location
+
                     Stack(
                       children: [
                         Container(
@@ -80,6 +78,7 @@ class _QuranSectionState extends State<QuranSection> {
                         )),
                       ],
                     ),
+                    // hijrii BAr With Date
                     Container(
                         height: orientation == Orientation.portrait
                             ? MediaQuery.of(context).size.height * 0.1
@@ -104,6 +103,7 @@ class _QuranSectionState extends State<QuranSection> {
                                     child: SizedBox(
                                       width: 200,
                                       child: ListTile(
+                                          //  Hijrii
                                           title: Text(
                                               snapshot.data.data.date.hijri
                                                       .month.en +
@@ -113,6 +113,7 @@ class _QuranSectionState extends State<QuranSection> {
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 20)),
+                                          // date
                                           subtitle: Center(
                                               child: Text(
                                             snapshot
@@ -144,27 +145,27 @@ class _QuranSectionState extends State<QuranSection> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              NimazTimeTile(
+                              nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/sunrise.png',
                                 'Fajr',
                                 snapshot.data.data.timings.fajr,
                               ),
-                              NimazTimeTile(
+                              nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/sun.png',
                                 'Dhuhr',
                                 snapshot.data.data.timings.dhuhr,
                               ),
-                              NimazTimeTile(
+                              nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/sun.png',
                                 'Asr',
                                 snapshot.data.data.timings.asr,
                               ),
-                              NimazTimeTile(
+                              nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/sunset.png',
                                 'Maghrib',
                                 snapshot.data.data.timings.maghrib,
                               ),
-                              NimazTimeTile(
+                              nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/night.png',
                                 'Isha',
                                 snapshot.data.data.timings.isha,
@@ -184,7 +185,8 @@ class _QuranSectionState extends State<QuranSection> {
     );
   }
 
-  Widget NimazTimeTile(
+  // NomazTilee for each Nimaz
+  Widget nimazTimeTile(
     String leadingicon,
     String nimazName,
     String nimazTime,
@@ -195,6 +197,7 @@ class _QuranSectionState extends State<QuranSection> {
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              // Fetch the nimaz name and Shows Icon
               Padding(
                   padding: EdgeInsets.only(left: 20),
                   child: Row(children: [
@@ -211,6 +214,7 @@ class _QuranSectionState extends State<QuranSection> {
                       style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ])),
+              // Alaram bell notification Icons With Time
               Padding(
                   padding: EdgeInsets.only(right: 10),
                   child: Row(children: [
