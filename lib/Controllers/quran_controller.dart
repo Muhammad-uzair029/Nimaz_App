@@ -1,11 +1,11 @@
+import 'package:get/get.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:Nimaz_App_Demo/Model/data.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 
-class AlAdanAPI {
-// initiize the Longitutude and latittude
+class QuranController extends GetxController {
   static double pLat = 0.0;
   static double pLong = 0.0;
 // calling the model

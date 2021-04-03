@@ -1,6 +1,7 @@
+import 'package:Nimaz_App_Demo/Controllers/quran_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:Nimaz_App_Demo/Utils/AlAdanApis.dart';
+import 'package:get/get.dart';
 
 class QuranSection extends StatefulWidget {
   @override
@@ -8,13 +9,10 @@ class QuranSection extends StatefulWidget {
 }
 
 class _QuranSectionState extends State<QuranSection> {
-  //Calling APi Class
-  AlAdanAPI _alAAdanapi = new AlAdanAPI();
-
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
-
+    final _quranController = Get.find<QuranController>();
     return Scaffold(
       body: Stack(
         children: [
@@ -22,7 +20,7 @@ class _QuranSectionState extends State<QuranSection> {
             color: HexColor("#100F17"),
           ),
           FutureBuilder(
-            future: _alAAdanapi.getnimazSchedule(),
+            future: _quranController.getnimazSchedule(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return Container(

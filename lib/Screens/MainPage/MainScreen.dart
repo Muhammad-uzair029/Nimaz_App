@@ -1,11 +1,9 @@
-import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/More.dart';
-import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla/Qibla.dart';
-import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Quran.dart';
-import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Today.dart';
+import 'package:Nimaz_App_Demo/Controllers/mainPage_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:get/get.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -13,20 +11,18 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
-
-  final Color navBarColor = HexColor('#2a2b3d');
   @override
   Widget build(BuildContext context) {
+    final _quranController = Get.find<MainPageController>();
+    final _persistantTaBController = Get.find<PersistentTabController>();
     // persistant Tab change the Style olor and items, screens
     return PersistentTabView(
       context,
-      controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
+      controller: _persistantTaBController,
+      screens: _quranController.buildScreens(),
+      items: _quranController.navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: navBarColor, // Default is Colors.white.
+      backgroundColor: _quranController.navBarColor, // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
@@ -54,43 +50,4 @@ class _MainPageState extends State<MainPage> {
           NavBarStyle.style6, // Choose the nav bar style with this property.
     );
   }
-}
-
-// Screens
-List<Widget> _buildScreens() {
-  return [Today(), QiblaSection(), QuranSection(), More()];
-}
-
-// Botton Nav bar name, icons, that used above
-List<PersistentBottomNavBarItem> _navBarsItems() {
-  return [
-    PersistentBottomNavBarItem(
-      icon: Image.asset(
-        'assets/home_screen/today.png',
-      ),
-      title: ("Today"),
-      activeColorPrimary: HexColor('#16a884'),
-      inactiveColorPrimary: Colors.grey,
-    ),
-    PersistentBottomNavBarItem(
-      icon: Image.asset(
-        'assets/home_screen/kaaba.png',
-      ),
-      title: ("Qibla"),
-      activeColorPrimary: HexColor('#16a884'),
-      inactiveColorPrimary: Colors.grey,
-    ),
-    PersistentBottomNavBarItem(
-      icon: Image.asset('assets/home_screen/quran.png'),
-      title: ("Quran"),
-      activeColorPrimary: HexColor('#16a884'),
-      inactiveColorPrimary: Colors.grey,
-    ),
-    PersistentBottomNavBarItem(
-      icon: Icon(Icons.menu),
-      title: ("More"),
-      activeColorPrimary: HexColor('#16a884'),
-      inactiveColorPrimary: Colors.grey,
-    ),
-  ];
 }
