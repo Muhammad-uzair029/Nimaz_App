@@ -1,8 +1,16 @@
 import 'package:Nimaz_App_Demo/Controllers/today_controller.dart';
+import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
+import 'package:Nimaz_App_Demo/Notifiction/notificationPlugin.dart';
+import 'package:Nimaz_App_Demo/Notifiction/notificationScreens.dart';
+import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla/Qibla.dart';
+import 'package:Nimaz_App_Demo/Screens/MainPage/MainScreen.dart';
+import 'package:Nimaz_App_Demo/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_restart/flutter_restart.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
 
 class TodaySection extends StatefulWidget {
   @override
@@ -10,6 +18,32 @@ class TodaySection extends StatefulWidget {
 }
 
 class _TodaySectionState extends State<TodaySection> {
+  final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey(debugLabel: "Main Navigator");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    notificationPlugin
+        .setListenerForLowerVersions(onNotificationInLowerVersions);
+    notificationPlugin.setOnNotificationClick(onNotificationClick);
+  }
+
+  onNotificationInLowerVersions(ReceivedNotification receivedNotification) {
+    print('Notification Received ${receivedNotification.id}');
+  }
+
+  onNotificationClick(String payload) {
+    print('Payload $payload');
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (context) => TodaySection()));
+
+    navigatorKey.currentState
+        .push(MaterialPageRoute(builder: (_) => MainPage()));
+  }
+
   final user = User().obs;
   String setstateofdate;
 
@@ -27,6 +61,12 @@ class _TodaySectionState extends State<TodaySection> {
             future: _todayController.getnimazSchedule(setstateofdate),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
+                _todayController.periodictimer(
+                    snapshot.data.data.timings.fajr,
+                    snapshot.data.data.timings.dhuhr,
+                    snapshot.data.data.timings.asr,
+                    snapshot.data.data.timings.maghrib,
+                    snapshot.data.data.timings.isha);
                 return Container(
                     child: Column(
                   children: <Widget>[
@@ -166,25 +206,30 @@ class _TodaySectionState extends State<TodaySection> {
                                 'assets/home_screen/sunrise_for_calendar/sunrise.png',
                                 'Fajr',
                                 snapshot.data.data.timings.fajr,
+                                snapshot.data.data.timings.fajr,
                               ),
                               nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/sun.png',
                                 'Dhuhr',
+                                snapshot.data.data.timings.dhuhr,
                                 snapshot.data.data.timings.dhuhr,
                               ),
                               nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/sun.png',
                                 'Asr',
                                 snapshot.data.data.timings.asr,
+                                snapshot.data.data.timings.asr,
                               ),
                               nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/sunset.png',
                                 'Maghrib',
                                 snapshot.data.data.timings.maghrib,
+                                snapshot.data.data.timings.maghrib,
                               ),
                               nimazTimeTile(
                                 'assets/home_screen/sunrise_for_calendar/night.png',
                                 'Isha',
+                                snapshot.data.data.timings.isha,
                                 snapshot.data.data.timings.isha,
                               ),
                             ],
@@ -207,7 +252,18 @@ class _TodaySectionState extends State<TodaySection> {
     String leadingicon,
     String nimazName,
     String nimazTime,
+    String alaramIconTime,
   ) {
+    final _todayController = Get.find<TodayController>();
+    // timer = Timer.periodic(Duration(minutes: 1), (Timer t) async {
+    //   DateTime now = DateTime.now();
+
+    //   String formattedTime = DateFormat.Hm().format(now);
+    //   print("Notification Formatted Dates");
+    //   print(formattedTime);
+    // });
+    print("Today Time baby");
+    print(_todayController.user.value.formattedTime);
     return Container(
         padding: EdgeInsets.all(5.0),
         margin: EdgeInsets.symmetric(vertical: 10.0),
@@ -231,7 +287,9 @@ class _TodaySectionState extends State<TodaySection> {
                       style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ])),
+
               // Alaram bell notification Icons With Time
+
               Padding(
                   padding: EdgeInsets.only(right: 10),
                   child: Row(children: [
@@ -240,11 +298,17 @@ class _TodaySectionState extends State<TodaySection> {
                         child: Text(nimazTime,
                             style:
                                 TextStyle(color: Colors.white, fontSize: 17))),
-                    ImageIcon(
-                      AssetImage('assets/home_screen/notification.png'),
-                      size: 25,
-                      color: HexColor('#16a884'),
-                    ),
+                    Obx(() => Container(
+                          child: _todayController.user.value.formattedTime ==
+                                  alaramIconTime
+                              ? ImageIcon(
+                                  AssetImage(
+                                      'assets/home_screen/notification.png'),
+                                  size: 25,
+                                  color: HexColor('#16a884'),
+                                )
+                              : Container(),
+                        )),
                   ])),
             ]));
   }

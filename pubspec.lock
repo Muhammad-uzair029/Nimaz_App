@@ -111,6 +111,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.3+2"
+  flutter_restart:
+    dependency: "direct main"
+    description:
+      name: flutter_restart
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.3"
   flutter_svg:
     dependency: "direct main"
     description:

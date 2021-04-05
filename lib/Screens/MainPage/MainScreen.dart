@@ -16,31 +16,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  Timer timer;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    notificationPlugin
-        .setListenerForLowerVersions(onNotificationInLowerVersions);
-    notificationPlugin.setOnNotificationClick(onNotificationClick);
-
-    timer = Timer.periodic(Duration(minutes: 1), (Timer t) async {
-      DateTime now = DateTime.now();
-
-      String formattedTime = DateFormat.Hm().format(now);
-      print(formattedTime);
-      if (formattedTime == "05:19") {
-        await notificationPlugin.showNotification('asdasd', 'asdasd');
-      }
-      //  else {
-      //   await notificationPlugin.showNotification('kkkkk', 'kkkkkkasd');
-      // }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final _quranController = Get.find<MainPageController>();
@@ -79,18 +54,5 @@ class _MainPageState extends State<MainPage> {
       navBarStyle:
           NavBarStyle.style6, // Choose the nav bar style with this property.
     );
-  }
-
-  onNotificationInLowerVersions(ReceivedNotification receivedNotification) {
-    print('Notification Received ${receivedNotification.id}');
-  }
-
-  onNotificationClick(String payload) {
-    print('Payload $payload');
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => notificationScreen(msg: payload),
-        ));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:Nimaz_App_Demo/Notifiction/notificationPlugin.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -5,10 +6,12 @@ import 'package:Nimaz_App_Demo/Model/data.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 class User {
   String currentDate;
-  User({this.currentDate});
+  String formattedTime;
+  User({this.currentDate, this.formattedTime});
 }
 
 class TodayController extends GetxController {
@@ -89,4 +92,30 @@ class TodayController extends GetxController {
 
     return datetimeFormatter(preDaysFrom);
   }
+
+// Nimaz time controller
+//
+  Timer timer;
+
+  void periodictimer(String fajar, zohar, asr, maghrib, isha) {
+    timer = Timer.periodic(Duration(minutes: 1), (Timer t) async {
+      DateTime now = DateTime.now();
+      user(User(formattedTime: DateFormat.Hm().format(now)));
+
+      user().formattedTime == fajar
+          ? await notificationPlugin.showNotification('Fajar', 'Fajar')
+          : user().formattedTime == zohar
+              ? await notificationPlugin.showNotification('Zohar', 'Zohar')
+              : user().formattedTime == asr
+                  ? await notificationPlugin.showNotification('asr', 'asr')
+                  : user().formattedTime == maghrib
+                      ? await notificationPlugin.showNotification('maghrib', '')
+                      : user().formattedTime == isha
+                          ? await notificationPlugin.showNotification('ish', '')
+                          : Container();
+    });
+  }
+// Notiification methods
+//
+
 }
