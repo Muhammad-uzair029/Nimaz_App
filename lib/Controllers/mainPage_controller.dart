@@ -1,8 +1,9 @@
+import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Quran.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/More.dart';
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla/Qibla.dart';
-import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Quran.dart';
+import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Today.dart';
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Today.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -12,7 +13,7 @@ class MainPageController extends GetxController {
 
   // Screens
   List<Widget> buildScreens() {
-    return [Today(), QiblaSection(), QuranSection(), More()];
+    return [TodaySection(), QiblaSection(), QuranSection(), More()];
   }
 
 // Botton Nav bar name, icons, that used above

@@ -1,6 +1,8 @@
 import 'package:Nimaz_App_Demo/Bindings/mainPage_binding.dart';
 import 'package:Nimaz_App_Demo/Bindings/qibla_bindings.dart';
 import 'package:Nimaz_App_Demo/Bindings/quran_bindings.dart';
+// import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
+import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla/Qibla.dart';
 import 'package:flutter/material.dart';
 import 'package:Nimaz_App_Demo/Screens/MainPage/MainScreen.dart';
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
             binding: QuranBinding()),
       ],
       initialRoute: "/MainPage",
+      // home: notification(title: "Fajar", body: "Fajar"),
     );
   }
 }
