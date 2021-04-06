@@ -68,9 +68,8 @@ class _TodaySectionState extends State<TodaySection> {
     } else {
       time = "${two.difference(one)}".substring(0, 4);
     }
-    // setState(() {
     getTheTime = time.toString();
-    // });
+
     return time;
   }
 
@@ -112,20 +111,7 @@ class _TodaySectionState extends State<TodaySection> {
     });
     print('this is the length');
     print(getTheTime.length);
-
-    // if (getminutesfortext.length == 1) {
-    //   getminutesfortext = '0' + getminutesfortext;
-    // }
-    // if (gethoursfortext.length == 1) {
-    //   gethoursfortext = '0' + gethoursfortext;
-    // }
-    // setState(() {
     getTheTime = gethoursfortext + ':' + getminutesfortext;
-    // });
-
-    // print("After tdecrement::");
-    // print(getTheTime);
-    // return getTheTime;
   }
 
   @override
@@ -147,7 +133,12 @@ class _TodaySectionState extends State<TodaySection> {
                 _todayController.notificationPeriodicTimer(
                     // "02:36",
                     snapshot.data.data.timings.fajr,
-                    // "00:32",
+                    snapshot.data.data.timings.dhuhr,
+                    snapshot.data.data.timings.asr,
+                    snapshot.data.data.timings.maghrib,
+                    snapshot.data.data.timings.isha);
+                _todayController.getNimaz(
+                    snapshot.data.data.timings.fajr,
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
@@ -176,11 +167,11 @@ class _TodaySectionState extends State<TodaySection> {
                                 padding: orientation == Orientation.portrait
                                     ? EdgeInsets.only(top: 70)
                                     : EdgeInsets.only(top: 5),
-                                child: Obx(() => Text(
-                                    _todayController.user.value.nimazName
+                                child: Text(
+                                    _todayController.user.value.showNimazName
                                         .toString(),
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 40)))),
+                                        color: Colors.white, fontSize: 40))),
                             Padding(
                                 padding: orientation == Orientation.portrait
                                     ? EdgeInsets.only(top: 10)

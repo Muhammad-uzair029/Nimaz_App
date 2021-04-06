@@ -13,15 +13,14 @@ class User {
   String formattedTime;
   String nimazName;
   String getminutes;
-  String getTheTime;
-  // String gethours;
+  String showNimazName;
 
   User({
     this.currentDate,
     this.formattedTime,
     this.nimazName,
     this.getminutes,
-    this.getTheTime,
+    this.showNimazName,
   });
 }
 
@@ -40,7 +39,8 @@ class TodayController extends GetxController {
   // var user1 =
   //     User(nimazName: "Aachman").obs; // declare just like any other variable
 // on the controller file
-  final user = User(getminutes: '23', getTheTime: '12:45').obs;
+  final user =
+      User(getminutes: '23', nimazName: 'wer', showNimazName: 'asd').obs;
 
 // calling the model
   Data list = new Data();
@@ -53,7 +53,6 @@ class TodayController extends GetxController {
     pLat = position.latitude;
     pLong = position.longitude;
 
-    String date = DateTime.now().toIso8601String();
     // method 4 for fatching the region
     int method = 4; //
     // Api number 1 from the aladhan.com/prayer_time , and I pick 11 uber api
@@ -86,11 +85,11 @@ class TodayController extends GetxController {
     incount++;
     var daysFromNow = DateTime.now().add(new Duration(days: incount));
 
-    print("Current Date");
-    print(date);
-    print("PreDay is ::::");
+    // print("Current Date");
+    // print(date);
+    // print("PreDay is ::::");
 
-    print(daysFromNow);
+    // print(daysFromNow);
     user(User(currentDate: datetimeFormatter(daysFromNow)));
 
     return datetimeFormatter(daysFromNow);
@@ -98,10 +97,10 @@ class TodayController extends GetxController {
 
   String decrementDate() {
     preDaysFrom = DateTime.now().add(new Duration(days: incount--));
-    print("Counter Value:::");
-    print(incount);
-    print("PreDay::::");
-    print(preDaysFrom);
+    // print("Counter Value:::");
+    // print(incount);
+    // print("PreDay::::");
+    // print(preDaysFrom);
     user(User(currentDate: datetimeFormatter(preDaysFrom)));
 
     return datetimeFormatter(preDaysFrom);
@@ -113,7 +112,7 @@ class TodayController extends GetxController {
   void notificationPeriodicTimer(String fajar, zohar, asr, maghrib, isha) {
     timer = Timer.periodic(Duration(minutes: 1), (Timer t) async {
       DateTime now = DateTime.now();
-      print(DateFormat.Hm().format(now));
+      // print(DateFormat.Hm().format(now));
       user(User(formattedTime: DateFormat.Hm().format(now)));
       if (user().formattedTime == fajar) {
         await notificationPlugin.showNotification('Fajar', 'Fajar');
@@ -137,33 +136,120 @@ class TodayController extends GetxController {
         user(User(nimazName: 'Fajar'));
       }
     });
+
+    user(User(showNimazName: user().nimazName));
   }
 
-//  delay time settingss
-//
+// getnimazName and Time When USe Start the application
 
-  String getminutesfortext = 'asd';
-  String gethoursfortext;
-  String nn;
-  String delayNimazTime(String delayNimazTime) {
+  void getNimaz(String fjr, zohar, asar, mag, ish) {
     DateTime now = DateTime.now();
-    String todayDate1 = DateFormat.Hm().format(now);
-    var format = DateFormat.Hm();
+    String nowTime = DateFormat.H().format(now);
+    var format = DateFormat.H();
     // Fajar Section
-    DateTime todayDate = DateFormat('HH:mm').parse(delayNimazTime);
-    String todayDate2 = DateFormat.Hm().format(todayDate);
-    var one = format.parse(todayDate1);
-    var two = format.parse(todayDate2);
-    // String ss = (two.difference(one).toString()).substring(0, 1);
-    String time = "${two.difference(one)}".substring(0, 6);
+    DateTime fjrtime = DateFormat('HH').parse(fjr);
+    String fjrtime2 = DateFormat.H().format(fjrtime);
+    var fjrtime3 = format.parse(fjrtime2);
+    // zohar Section
+    DateTime zohartime = DateFormat('HH').parse(zohar);
+    String zohartime2 = DateFormat.H().format(zohartime);
+    var zohartime3 = format.parse(zohartime2);
+    // Asar Section
+    DateTime asrtime = DateFormat('HH').parse(asar);
+    String asrtime2 = DateFormat.H().format(asrtime);
+    var asrtime3 = format.parse(asrtime2);
+    // Maghrib Section
+    DateTime magtime = DateFormat('HH').parse(mag);
+    String magtime2 = DateFormat.H().format(magtime);
+    var magtime3 = format.parse(magtime2);
+    // Ishahrib Section
+    DateTime ishatime = DateFormat('HH').parse(ish);
+    String ishatime2 = DateFormat.H().format(ishatime);
+    var ishatime3 = format.parse(ishatime2);
 
-    if (time[1] == ':') {
-      time = "${two.difference(one)}".substring(0, 4);
-    } else {
-      time = "${two.difference(one)}".substring(0, 5);
+    var nimazlist = new List(5);
+    nimazlist[0] = fjrtime3;
+    nimazlist[1] = zohartime3;
+    nimazlist[2] = asrtime3;
+    nimazlist[3] = magtime3;
+    nimazlist[4] = ishatime3;
+    var nimaz_Diff = new List(5);
+
+    for (int i = 0; i < 5; i++) {
+      var timeNow = format.parse(nowTime);
+
+      String diff = "${nimazlist[i].difference(timeNow)}".substring(0, 2);
+      if (diff.contains(':')) {
+        diff = diff.substring(0, 1);
+        nimaz_Diff[i] = diff;
+      } else {
+        nimaz_Diff[i] = diff;
+      }
     }
-    user(User(getTheTime: time));
 
-    return time;
+    int smallest_value = int.parse(nimaz_Diff[0]);
+    // incex number for finding the name of nimaz
+    int index_number = 0;
+    // //Loop through the array
+    for (int i = 0; i < nimaz_Diff.length; i++) {
+      //Compare elements of array with min
+      if (int.parse(nimaz_Diff[i]) < smallest_value) {
+        smallest_value = int.parse(nimaz_Diff[i]);
+        index_number = i;
+      }
+    }
+
+    print("Smallest value in the list : ${smallest_value}");
+
+    print(index_number);
+    index_number == 0
+        ? user(User(nimazName: 'Fajar'))
+        : index_number == 1
+            ? user(User(nimazName: 'Zohar'))
+            : index_number == 2
+                ? user(User(nimazName: 'Asar'))
+                : index_number == 3
+                    ? user(User(nimazName: 'Maghrib'))
+                    : index_number == 4
+                        ? user(User(nimazName: 'Isha'))
+                        : user(User(nimazName: 'sdfg'));
+
+    print("Nimaz");
+    print(nimazlist);
+    print("Difference::::");
+    print(nimaz_Diff);
+    print("Niaz name");
+    user(User(showNimazName: user().nimazName));
+    print(user().showNimazName);
   }
 }
+
+//  delay time settingss by Difference Rough Code
+//
+
+// String getminutesfortext = 'asd';
+// String gethoursfortext;
+// String nn;
+// String delayNimazTime(String delayNimazTime) {
+//   DateTime now = DateTime.now();
+//   String todayDate1 = DateFormat.Hm().format(now);
+//   var format = DateFormat.Hm();
+//   // Fajar Section
+//   DateTime todayDate = DateFormat('HH:mm').parse(delayNimazTime);
+//   String todayDate2 = DateFormat.Hm().format(todayDate);
+//   var one = format.parse(todayDate1);
+//   var two = format.parse(todayDate2);
+//   // String ss = (two.difference(one).toString()).substring(0, 1);
+//   String time = "${two.difference(one)}".substring(0, 6);
+
+//   if (time[1] == ':') {
+//     time = "${two.difference(one)}".substring(0, 4);
+//   } else {
+//     time = "${two.difference(one)}".substring(0, 5);
+//   }
+
+//   return time;
+// }
+
+// Show Time and Nimaz At Start
+//
