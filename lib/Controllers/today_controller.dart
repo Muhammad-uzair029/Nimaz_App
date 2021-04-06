@@ -11,12 +11,24 @@ import 'package:flutter/material.dart';
 class User {
   String currentDate;
   String formattedTime;
-  User({this.currentDate, this.formattedTime});
+  String nimazName;
+  String getminutes;
+  String getTheTime;
+  // String gethours;
+
+  User({
+    this.currentDate,
+    this.formattedTime,
+    this.nimazName,
+    this.getminutes,
+    this.getTheTime,
+  });
 }
 
 class TodayController extends GetxController {
   static double pLat = 0.0;
   static double pLong = 0.0;
+
 // variables of Days Controller
   int incount = 0;
 
@@ -25,9 +37,11 @@ class TodayController extends GetxController {
   static final DateTime nowDate = DateTime.now();
   // String currentDate = nowDate.toIso8601String();
   // var user = User(currentDate: nowDate.toIso8601String()).obs;
-  // var user1 = User(name: "Aachman").obs; // declare just like any other variable
+  // var user1 =
+  //     User(nimazName: "Aachman").obs; // declare just like any other variable
 // on the controller file
-  final user = User().obs;
+  final user = User(getminutes: '23', getTheTime: '12:45').obs;
+
 // calling the model
   Data list = new Data();
 
@@ -96,26 +110,60 @@ class TodayController extends GetxController {
 // Nimaz time controller
 //
   Timer timer;
-
-  void periodictimer(String fajar, zohar, asr, maghrib, isha) {
+  void notificationPeriodicTimer(String fajar, zohar, asr, maghrib, isha) {
     timer = Timer.periodic(Duration(minutes: 1), (Timer t) async {
       DateTime now = DateTime.now();
+      print(DateFormat.Hm().format(now));
       user(User(formattedTime: DateFormat.Hm().format(now)));
+      if (user().formattedTime == fajar) {
+        await notificationPlugin.showNotification('Fajar', 'Fajar');
+        user(User(nimazName: 'Dhuhr'));
+      }
+      if (user().formattedTime == zohar) {
+        await notificationPlugin.showNotification('Zohar', 'Zohar');
+        user(User(nimazName: 'Asr'));
+      }
+      if (user().formattedTime == asr) {
+        await notificationPlugin.showNotification('asr', 'asr');
 
-      user().formattedTime == fajar
-          ? await notificationPlugin.showNotification('Fajar', 'Fajar')
-          : user().formattedTime == zohar
-              ? await notificationPlugin.showNotification('Zohar', 'Zohar')
-              : user().formattedTime == asr
-                  ? await notificationPlugin.showNotification('asr', 'asr')
-                  : user().formattedTime == maghrib
-                      ? await notificationPlugin.showNotification('maghrib', '')
-                      : user().formattedTime == isha
-                          ? await notificationPlugin.showNotification('ish', '')
-                          : Container();
+        user(User(nimazName: 'Maghrib'));
+      }
+      if (user().formattedTime == maghrib) {
+        await notificationPlugin.showNotification('maghrib', 'maghrib');
+        user(User(nimazName: 'Isha'));
+      }
+      if (user().formattedTime == isha) {
+        await notificationPlugin.showNotification('isha', 'Isha');
+        user(User(nimazName: 'Fajar'));
+      }
     });
   }
-// Notiification methods
+
+//  delay time settingss
 //
 
+  String getminutesfortext = 'asd';
+  String gethoursfortext;
+  String nn;
+  String delayNimazTime(String delayNimazTime) {
+    DateTime now = DateTime.now();
+    String todayDate1 = DateFormat.Hm().format(now);
+    var format = DateFormat.Hm();
+    // Fajar Section
+    DateTime todayDate = DateFormat('HH:mm').parse(delayNimazTime);
+    String todayDate2 = DateFormat.Hm().format(todayDate);
+    var one = format.parse(todayDate1);
+    var two = format.parse(todayDate2);
+    // String ss = (two.difference(one).toString()).substring(0, 1);
+    String time = "${two.difference(one)}".substring(0, 6);
+
+    if (time[1] == ':') {
+      time = "${two.difference(one)}".substring(0, 4);
+    } else {
+      time = "${two.difference(one)}".substring(0, 5);
+    }
+    user(User(getTheTime: time));
+
+    return time;
+  }
 }

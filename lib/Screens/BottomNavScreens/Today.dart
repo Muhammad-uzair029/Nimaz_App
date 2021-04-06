@@ -1,5 +1,7 @@
 import 'package:Nimaz_App_Demo/Controllers/today_controller.dart';
 import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
+import 'package:flutter_countdown_timer/current_remaining_time.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:Nimaz_App_Demo/Notifiction/notificationPlugin.dart';
 import 'package:Nimaz_App_Demo/Notifiction/notificationScreens.dart';
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla/Qibla.dart';
@@ -11,6 +13,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+import 'package:intl/intl.dart';
+import 'dart:io';
 
 class TodaySection extends StatefulWidget {
   @override
@@ -20,12 +24,18 @@ class TodaySection extends StatefulWidget {
 class _TodaySectionState extends State<TodaySection> {
   final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey(debugLabel: "Main Navigator");
+  String setstateofdate;
 
+  String getminutesfortext = 'asd';
+  String gethoursfortext;
+  String getTheTime = "2:44";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    Timer.periodic(Duration(minutes: 1), (Timer t) async {
+      decrementtheTime();
+    });
     notificationPlugin
         .setListenerForLowerVersions(onNotificationInLowerVersions);
     notificationPlugin.setOnNotificationClick(onNotificationClick);
@@ -37,20 +47,93 @@ class _TodaySectionState extends State<TodaySection> {
 
   onNotificationClick(String payload) {
     print('Payload $payload');
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => TodaySection()));
-
     navigatorKey.currentState
         .push(MaterialPageRoute(builder: (_) => MainPage()));
   }
 
-  final user = User().obs;
-  String setstateofdate;
+  String delayNimazTime(String delayNimazTime) {
+    DateTime now = DateTime.now();
+    String todayDate1 = DateFormat.Hm().format(now);
+    var format = DateFormat.Hm();
+    // Fajar Section
+    DateTime todayDate = DateFormat('HH:mm').parse(delayNimazTime);
+    String todayDate2 = DateFormat.Hm().format(todayDate);
+    var one = format.parse(todayDate1);
+    var two = format.parse(todayDate2);
+    // String ss = (two.difference(one).toString()).substring(0, 1);
+    String time = "${two.difference(one)}".substring(0, 5);
+
+    if (time[1] == ':') {
+      time = "${two.difference(one)}".substring(0, 4);
+    } else {
+      time = "${two.difference(one)}".substring(0, 4);
+    }
+    // setState(() {
+    getTheTime = time.toString();
+    // });
+    return time;
+  }
+
+  // int intointminutes;
+  void decrementtheTime() {
+    // if (getTime.length == 5) {
+
+    print("This is the Time gett by::");
+    print(getTheTime);
+
+    String getminutes = getTheTime.substring(2, 4);
+    String gethours = getTheTime.substring(0, 1);
+
+    int intointminutes = int.parse(getminutes);
+    int intointHours = int.parse(gethours);
+
+    print('minutes:');
+    print(intointminutes);
+    if (intointminutes <= 59) {
+      intointminutes--;
+
+      if (intointminutes < 0) {
+        intointHours--;
+        setState(() {
+          intointminutes = 59;
+        });
+      }
+    }
+    print("These Are minutes:");
+    print(intointminutes);
+    print("These Are Hours:");
+    print(intointHours);
+
+    setState(() {
+      getminutesfortext = intointminutes.toString();
+    });
+    setState(() {
+      gethoursfortext = intointHours.toString();
+    });
+    print('this is the length');
+    print(getTheTime.length);
+
+    // if (getminutesfortext.length == 1) {
+    //   getminutesfortext = '0' + getminutesfortext;
+    // }
+    // if (gethoursfortext.length == 1) {
+    //   gethoursfortext = '0' + gethoursfortext;
+    // }
+    // setState(() {
+    getTheTime = gethoursfortext + ':' + getminutesfortext;
+    // });
+
+    // print("After tdecrement::");
+    // print(getTheTime);
+    // return getTheTime;
+  }
 
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     final _todayController = Get.put(TodayController());
+    // getTheTime = _todayController.user.value.getTheTime.toString();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -61,8 +144,10 @@ class _TodaySectionState extends State<TodaySection> {
             future: _todayController.getnimazSchedule(setstateofdate),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                _todayController.periodictimer(
+                _todayController.notificationPeriodicTimer(
+                    // "02:36",
                     snapshot.data.data.timings.fajr,
+                    // "00:32",
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
@@ -91,18 +176,56 @@ class _TodaySectionState extends State<TodaySection> {
                                 padding: orientation == Orientation.portrait
                                     ? EdgeInsets.only(top: 70)
                                     : EdgeInsets.only(top: 5),
-                                child: Text('ISHA',
+                                child: Obx(() => Text(
+                                    _todayController.user.value.nimazName
+                                        .toString(),
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 40))),
+                                        color: Colors.white, fontSize: 40)))),
                             Padding(
                                 padding: orientation == Orientation.portrait
                                     ? EdgeInsets.only(top: 10)
                                     : EdgeInsets.only(top: 0),
-                                child: Text(
-                                    snapshot.data.data.meta.offset.isha
-                                        .toString(),
+                                child: Obx(() => Text(
+                                    _todayController.user.value.nimazName
+                                                .toString() ==
+                                            "Fajar"
+                                        ? delayNimazTime(
+                                            snapshot.data.data.timings.fajr,
+                                          )
+                                        : _todayController.user.value.nimazName
+                                                    .toString() ==
+                                                "Dhuhr"
+                                            ? delayNimazTime(
+                                                snapshot
+                                                    .data.data.timings.dhuhr,
+                                              )
+                                            : _todayController
+                                                        .user.value.nimazName
+                                                        .toString() ==
+                                                    "Asr"
+                                                ? delayNimazTime(
+                                                    snapshot
+                                                        .data.data.timings.asr,
+                                                  )
+                                                : _todayController.user.value
+                                                            .nimazName
+                                                            .toString() ==
+                                                        "Maghrib"
+                                                    ? delayNimazTime(
+                                                        snapshot.data.data
+                                                            .timings.maghrib,
+                                                      )
+                                                    : _todayController.user
+                                                                .value.nimazName
+                                                                .toString() ==
+                                                            "Isha"
+                                                        ? delayNimazTime(
+                                                            snapshot.data.data
+                                                                .timings.isha,
+                                                          )
+                                                        : getTheTime.toString(),
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 30))),
+                                        color: Colors.white, fontSize: 30)))),
                             SizedBox(
                                 width: 200,
                                 child: ListTile(
@@ -166,7 +289,15 @@ class _TodaySectionState extends State<TodaySection> {
                                           // date
                                           subtitle: Center(
                                               child: Obx(() => Text(
-                                                    '${_todayController.user.value.currentDate}',
+                                                    _todayController.user.value
+                                                                .currentDate ==
+                                                            null
+                                                        ? DateFormat(
+                                                                'yyyy-MM-dd')
+                                                            .format(
+                                                                DateTime.now())
+                                                            .toString()
+                                                        : '${_todayController.user.value.currentDate}',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 14),
@@ -262,8 +393,6 @@ class _TodaySectionState extends State<TodaySection> {
     //   print("Notification Formatted Dates");
     //   print(formattedTime);
     // });
-    print("Today Time baby");
-    print(_todayController.user.value.formattedTime);
     return Container(
         padding: EdgeInsets.all(5.0),
         margin: EdgeInsets.symmetric(vertical: 10.0),
