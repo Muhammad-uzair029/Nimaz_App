@@ -118,6 +118,7 @@ class _TodaySectionState extends State<TodaySection> {
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     final _todayController = Get.put(TodayController());
+    _todayController.onStart();
     // getTheTime = _todayController.user.value.getTheTime.toString();
 
     return Scaffold(
@@ -131,14 +132,15 @@ class _TodaySectionState extends State<TodaySection> {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 _todayController.notificationPeriodicTimer(
-                    // "02:36",
                     snapshot.data.data.timings.fajr,
+                    // "24:12",
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
                     snapshot.data.data.timings.isha);
                 _todayController.getNimaz(
                     snapshot.data.data.timings.fajr,
+                    // "23:12",
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
@@ -168,8 +170,7 @@ class _TodaySectionState extends State<TodaySection> {
                                     ? EdgeInsets.only(top: 70)
                                     : EdgeInsets.only(top: 5),
                                 child: Text(
-                                    _todayController.user.value.showNimazName
-                                        .toString(),
+                                    _todayController.showNimaz.toString(),
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 40))),
                             Padding(
@@ -260,12 +261,12 @@ class _TodaySectionState extends State<TodaySection> {
                             ),
                             Container(
                                 alignment: Alignment.topCenter,
-                                width: MediaQuery.of(context).size.width * 0.6,
+                                width: MediaQuery.of(context).size.width * 0.7,
                                 child: Padding(
                                     padding:
                                         EdgeInsets.only(left: 20, bottom: 10),
                                     child: SizedBox(
-                                      width: 200,
+                                      width: 500,
                                       child: ListTile(
                                           //  Hijrii
                                           title: Text(

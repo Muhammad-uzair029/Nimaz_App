@@ -13,15 +13,15 @@ class User {
   String formattedTime;
   String nimazName;
   String getminutes;
-  String showNimazName;
 
-  User({
-    this.currentDate,
-    this.formattedTime,
-    this.nimazName,
-    this.getminutes,
-    this.showNimazName,
-  });
+  String showNimazTime;
+
+  User(
+      {this.currentDate,
+      this.formattedTime,
+      this.nimazName,
+      this.getminutes,
+      this.showNimazTime});
 }
 
 class TodayController extends GetxController {
@@ -33,14 +33,15 @@ class TodayController extends GetxController {
 
   var daysFromNow;
   var preDaysFrom;
+  String showNimaz;
+  String nameofNimaz;
   static final DateTime nowDate = DateTime.now();
   // String currentDate = nowDate.toIso8601String();
   // var user = User(currentDate: nowDate.toIso8601String()).obs;
   // var user1 =
   //     User(nimazName: "Aachman").obs; // declare just like any other variable
 // on the controller file
-  final user =
-      User(getminutes: '23', nimazName: 'wer', showNimazName: 'asd').obs;
+  final user = User(getminutes: '23', nimazName: 'wer', showNimazTime: '').obs;
 
 // calling the model
   Data list = new Data();
@@ -116,28 +117,26 @@ class TodayController extends GetxController {
       user(User(formattedTime: DateFormat.Hm().format(now)));
       if (user().formattedTime == fajar) {
         await notificationPlugin.showNotification('Fajar', 'Fajar');
-        user(User(nimazName: 'Dhuhr'));
+        // user(User(nimazName: 'Dhuhr'));
       }
       if (user().formattedTime == zohar) {
         await notificationPlugin.showNotification('Zohar', 'Zohar');
-        user(User(nimazName: 'Asr'));
+        // user(User(nimazName: 'Asr'));
       }
       if (user().formattedTime == asr) {
         await notificationPlugin.showNotification('asr', 'asr');
 
-        user(User(nimazName: 'Maghrib'));
+        // user(User(nimazName: 'Maghrib'));
       }
       if (user().formattedTime == maghrib) {
         await notificationPlugin.showNotification('maghrib', 'maghrib');
-        user(User(nimazName: 'Isha'));
+        // user(User(nimazName: 'Isha'));
       }
       if (user().formattedTime == isha) {
         await notificationPlugin.showNotification('isha', 'Isha');
-        user(User(nimazName: 'Fajar'));
+        // user(User(nimazName: 'Fajar'));
       }
     });
-
-    user(User(showNimazName: user().nimazName));
   }
 
 // getnimazName and Time When USe Start the application
@@ -179,8 +178,14 @@ class TodayController extends GetxController {
       var timeNow = format.parse(nowTime);
 
       String diff = "${nimazlist[i].difference(timeNow)}".substring(0, 2);
-      if (diff.contains(':')) {
-        diff = diff.substring(0, 1);
+      if (diff != null) {
+        if (diff.contains(':')) {
+          diff = diff.substring(0, 1);
+        }
+        print(int.parse(diff));
+        if ((int.parse(diff)) <= 0) {
+          diff = '12';
+        }
         nimaz_Diff[i] = diff;
       } else {
         nimaz_Diff[i] = diff;
@@ -192,7 +197,8 @@ class TodayController extends GetxController {
     int index_number = 0;
     // //Loop through the array
     for (int i = 0; i < nimaz_Diff.length; i++) {
-      //Compare elements of array with min
+      //Compare elements of array with min and less then 2 bcz between  we want to elemniate the smaller value bcz its will not chnage the name of nimaz
+
       if (int.parse(nimaz_Diff[i]) < smallest_value) {
         smallest_value = int.parse(nimaz_Diff[i]);
         index_number = i;
@@ -202,25 +208,38 @@ class TodayController extends GetxController {
     print("Smallest value in the list : ${smallest_value}");
 
     print(index_number);
-    index_number == 0
-        ? user(User(nimazName: 'Fajar'))
-        : index_number == 1
-            ? user(User(nimazName: 'Zohar'))
-            : index_number == 2
-                ? user(User(nimazName: 'Asar'))
-                : index_number == 3
-                    ? user(User(nimazName: 'Maghrib'))
-                    : index_number == 4
-                        ? user(User(nimazName: 'Isha'))
-                        : user(User(nimazName: 'sdfg'));
+    index_number == 1
+        ? user(User(nimazName: 'Zohar'))
+        : index_number == 2
+            ? user(User(nimazName: 'Asar'))
+            : index_number == 3
+                ? user(User(nimazName: 'Maghrib'))
+                : index_number == 4
+                    ? user(User(nimazName: 'Isha'))
+                    : user(User(nimazName: 'sdfg'));
+
+    // index_number == 0
+    //     ? user(User(showNimazTime: nimaz_Diff[0]))
+    //     : index_number == 1
+    //         ? user(User(showNimazTime: nimaz_Diff[1]))
+    //         : index_number == 2
+    //             ? user(User(showNimazTime: nimaz_Diff[2]))
+    //             : index_number == 3
+    //                 ? user(User(showNimazTime: nimaz_Diff[3]))
+    //                 : index_number == 4
+    //                     ? user(User(showNimazTime: nimaz_Diff[4]))
+    //                     : user(User(showNimazTime: 'Non '));
 
     print("Nimaz");
     print(nimazlist);
     print("Difference::::");
     print(nimaz_Diff);
-    print("Niaz name");
-    user(User(showNimazName: user().nimazName));
-    print(user().showNimazName);
+
+    // user(User(showNimazName: user().nimazName));
+    showNimaz = user().nimazName;
+    print("Assigned nimaz");
+    print(showNimaz);
+    // print(user().nimazName);
   }
 }
 
