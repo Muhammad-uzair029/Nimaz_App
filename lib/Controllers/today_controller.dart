@@ -6,7 +6,6 @@ import 'package:Nimaz_App_Demo/Model/data.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
 
 class User {
   String currentDate;
@@ -28,11 +27,6 @@ class TodayController extends GetxController {
   static double pLat = 0.0;
   static double pLong = 0.0;
 
-// variables of Days Controller
-  int incount = 0;
-
-  var daysFromNow;
-  var preDaysFrom;
   String showNimaz;
   String nameofNimaz;
   static final DateTime nowDate = DateTime.now();
@@ -74,39 +68,6 @@ class TodayController extends GetxController {
     return list;
   }
 
-// Days Controller Funtions;;;;
-  String datetimeFormatter(DateTime now) {
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    final String formatted = formatter.format(now);
-    return formatted;
-  }
-
-  String incrmentDate() {
-    String date = DateTime.now().toIso8601String();
-    incount++;
-    var daysFromNow = DateTime.now().add(new Duration(days: incount));
-
-    // print("Current Date");
-    // print(date);
-    // print("PreDay is ::::");
-
-    // print(daysFromNow);
-    user(User(currentDate: datetimeFormatter(daysFromNow)));
-
-    return datetimeFormatter(daysFromNow);
-  }
-
-  String decrementDate() {
-    preDaysFrom = DateTime.now().add(new Duration(days: incount--));
-    // print("Counter Value:::");
-    // print(incount);
-    // print("PreDay::::");
-    // print(preDaysFrom);
-    user(User(currentDate: datetimeFormatter(preDaysFrom)));
-
-    return datetimeFormatter(preDaysFrom);
-  }
-
 // Nimaz time controller
 //
   Timer timer;
@@ -117,24 +78,24 @@ class TodayController extends GetxController {
       user(User(formattedTime: DateFormat.Hm().format(now)));
       if (user().formattedTime == fajar) {
         await notificationPlugin.showNotification('Fajar', 'Fajar');
-        // user(User(nimazName: 'Dhuhr'));
+        user(User(nimazName: 'Dhuhr'));
       }
       if (user().formattedTime == zohar) {
         await notificationPlugin.showNotification('Zohar', 'Zohar');
-        // user(User(nimazName: 'Asr'));
+        user(User(nimazName: 'Asr'));
       }
       if (user().formattedTime == asr) {
         await notificationPlugin.showNotification('asr', 'asr');
 
-        // user(User(nimazName: 'Maghrib'));
+        user(User(nimazName: 'Maghrib'));
       }
       if (user().formattedTime == maghrib) {
         await notificationPlugin.showNotification('maghrib', 'maghrib');
-        // user(User(nimazName: 'Isha'));
+        user(User(nimazName: 'Isha'));
       }
       if (user().formattedTime == isha) {
         await notificationPlugin.showNotification('isha', 'Isha');
-        // user(User(nimazName: 'Fajar'));
+        user(User(nimazName: 'Fajar'));
       }
     });
   }
@@ -208,27 +169,17 @@ class TodayController extends GetxController {
     print("Smallest value in the list : ${smallest_value}");
 
     print(index_number);
-    index_number == 1
-        ? user(User(nimazName: 'Zohar'))
-        : index_number == 2
-            ? user(User(nimazName: 'Asar'))
-            : index_number == 3
-                ? user(User(nimazName: 'Maghrib'))
-                : index_number == 4
-                    ? user(User(nimazName: 'Isha'))
-                    : user(User(nimazName: 'sdfg'));
-
-    // index_number == 0
-    //     ? user(User(showNimazTime: nimaz_Diff[0]))
-    //     : index_number == 1
-    //         ? user(User(showNimazTime: nimaz_Diff[1]))
-    //         : index_number == 2
-    //             ? user(User(showNimazTime: nimaz_Diff[2]))
-    //             : index_number == 3
-    //                 ? user(User(showNimazTime: nimaz_Diff[3]))
-    //                 : index_number == 4
-    //                     ? user(User(showNimazTime: nimaz_Diff[4]))
-    //                     : user(User(showNimazTime: 'Non '));
+    index_number == 0
+        ? user(User(nimazName: 'Fajar'))
+        : index_number == 1
+            ? user(User(nimazName: 'Zohar'))
+            : index_number == 2
+                ? user(User(nimazName: 'Asar'))
+                : index_number == 3
+                    ? user(User(nimazName: 'Maghrib'))
+                    : index_number == 4
+                        ? user(User(nimazName: 'Isha'))
+                        : user(User(nimazName: 'Null'));
 
     print("Nimaz");
     print(nimazlist);
@@ -272,3 +223,29 @@ class TodayController extends GetxController {
 
 // Show Time and Nimaz At Start
 //
+
+// // variables of Days Controller
+
+//   int incount = 0;
+
+//   var daysFromNow;
+//   var preDaysFrom;
+
+// // Days Controller Funtions;;;;
+//   String datetimeFormatter(DateTime now) {
+//     final DateFormat formatter = DateFormat('yyyy-MM-dd');
+//     final String formatted = formatter.format(now);
+//     return formatted;
+//   }
+
+//   void incrmentDate() {
+//     incount++;
+//     var daysFromNow = DateTime.now().add(new Duration(days: incount));
+
+//     user(User(currentDate: datetimeFormatter(daysFromNow)));
+//   }
+
+//   void decrementDate() {
+//     preDaysFrom = DateTime.now().add(new Duration(days: incount--));
+//     user(User(currentDate: datetimeFormatter(preDaysFrom)));
+//   }

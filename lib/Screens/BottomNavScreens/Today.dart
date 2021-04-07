@@ -1,20 +1,12 @@
 import 'package:Nimaz_App_Demo/Controllers/today_controller.dart';
-import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
-import 'package:flutter_countdown_timer/current_remaining_time.dart';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:Nimaz_App_Demo/Notifiction/notificationPlugin.dart';
-import 'package:Nimaz_App_Demo/Notifiction/notificationScreens.dart';
-import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla/Qibla.dart';
+
 import 'package:Nimaz_App_Demo/Screens/MainPage/MainScreen.dart';
-import 'package:Nimaz_App_Demo/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_restart/flutter_restart.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
-import 'package:intl/intl.dart';
-import 'dart:io';
 
 class TodaySection extends StatefulWidget {
   @override
@@ -24,7 +16,6 @@ class TodaySection extends StatefulWidget {
 class _TodaySectionState extends State<TodaySection> {
   final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey(debugLabel: "Main Navigator");
-  String setstateofdate;
 
   String getminutesfortext = 'asd';
   String gethoursfortext;
@@ -41,6 +32,7 @@ class _TodaySectionState extends State<TodaySection> {
     notificationPlugin.setOnNotificationClick(onNotificationClick);
   }
 
+// Notification Calling methods that USed in InitState of Today Setion;
   onNotificationInLowerVersions(ReceivedNotification receivedNotification) {
     print('Notification Received ${receivedNotification.id}');
   }
@@ -51,8 +43,8 @@ class _TodaySectionState extends State<TodaySection> {
         .push(MaterialPageRoute(builder: (_) => MainPage()));
   }
 
-  String delayNimazTime(String delayNimazTime) {
-    DateTime now = DateTime.now();
+  String delayNimazTime(DateTime now, String delayNimazTime) {
+    // DateTime now = DateTime.now();
     String todayDate1 = DateFormat.Hm().format(now);
     var format = DateFormat.Hm();
     // Fajar Section
@@ -75,19 +67,11 @@ class _TodaySectionState extends State<TodaySection> {
 
   // int intointminutes;
   void decrementtheTime() {
-    // if (getTime.length == 5) {
-
-    print("This is the Time gett by::");
-    print(getTheTime);
-
     String getminutes = getTheTime.substring(2, 4);
     String gethours = getTheTime.substring(0, 1);
 
     int intointminutes = int.parse(getminutes);
     int intointHours = int.parse(gethours);
-
-    print('minutes:');
-    print(intointminutes);
     if (intointminutes <= 59) {
       intointminutes--;
 
@@ -98,20 +82,45 @@ class _TodaySectionState extends State<TodaySection> {
         });
       }
     }
-    print("These Are minutes:");
-    print(intointminutes);
-    print("These Are Hours:");
-    print(intointHours);
-
     setState(() {
       getminutesfortext = intointminutes.toString();
     });
     setState(() {
       gethoursfortext = intointHours.toString();
     });
-    print('this is the length');
-    print(getTheTime.length);
     getTheTime = gethoursfortext + ':' + getminutesfortext;
+  }
+
+// variables of Days Controller
+  int incount = 0;
+
+  var daysFromNow;
+  var preDaysFrom;
+  String currentDate;
+  void incrmentDate() {
+    incount++;
+    var daysFromNow = DateTime.now().add(new Duration(days: incount));
+
+    setState(() {
+      currentDate = datetimeFormatter(daysFromNow);
+    });
+
+    // return datetimeFormatter(currentDate);
+  }
+
+  void decrementDate() {
+    preDaysFrom = DateTime.now().add(new Duration(days: incount--));
+    setState(() {
+      currentDate = datetimeFormatter(preDaysFrom);
+    });
+    // return datetimeFormatter(currentDate);
+  }
+
+// Days Controller Funtions;;;;
+  String datetimeFormatter(DateTime now) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(now);
+    return formatted;
   }
 
   @override
@@ -128,7 +137,7 @@ class _TodaySectionState extends State<TodaySection> {
             color: HexColor("#100F17"),
           ),
           FutureBuilder(
-            future: _todayController.getnimazSchedule(setstateofdate),
+            future: _todayController.getnimazSchedule(currentDate),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 _todayController.notificationPeriodicTimer(
@@ -177,47 +186,48 @@ class _TodaySectionState extends State<TodaySection> {
                                 padding: orientation == Orientation.portrait
                                     ? EdgeInsets.only(top: 10)
                                     : EdgeInsets.only(top: 0),
-                                child: Obx(() => Text(
-                                    _todayController.user.value.nimazName
-                                                .toString() ==
+                                child: Text(
+                                    _todayController.showNimaz.toString() ==
                                             "Fajar"
                                         ? delayNimazTime(
+                                            DateTime.now(),
                                             snapshot.data.data.timings.fajr,
                                           )
-                                        : _todayController.user.value.nimazName
+                                        : _todayController.showNimaz
                                                     .toString() ==
                                                 "Dhuhr"
                                             ? delayNimazTime(
+                                                DateTime.now(),
                                                 snapshot
                                                     .data.data.timings.dhuhr,
                                               )
-                                            : _todayController
-                                                        .user.value.nimazName
+                                            : _todayController.showNimaz
                                                         .toString() ==
                                                     "Asr"
                                                 ? delayNimazTime(
+                                                    DateTime.now(),
                                                     snapshot
                                                         .data.data.timings.asr,
                                                   )
-                                                : _todayController.user.value
-                                                            .nimazName
+                                                : _todayController.showNimaz
                                                             .toString() ==
                                                         "Maghrib"
                                                     ? delayNimazTime(
+                                                        DateTime.now(),
                                                         snapshot.data.data
                                                             .timings.maghrib,
                                                       )
-                                                    : _todayController.user
-                                                                .value.nimazName
+                                                    : _todayController.showNimaz
                                                                 .toString() ==
                                                             "Isha"
                                                         ? delayNimazTime(
+                                                            DateTime.now(),
                                                             snapshot.data.data
                                                                 .timings.isha,
                                                           )
                                                         : getTheTime.toString(),
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 30)))),
+                                        color: Colors.white, fontSize: 30))),
                             SizedBox(
                                 width: 200,
                                 child: ListTile(
@@ -252,21 +262,17 @@ class _TodaySectionState extends State<TodaySection> {
                                     size: 30,
                                   )),
                               onTap: () {
-                                _todayController.decrementDate();
-                                setState(() {
-                                  setstateofdate =
-                                      _todayController.user.value.currentDate;
-                                });
+                                decrementDate();
                               },
                             ),
                             Container(
                                 alignment: Alignment.topCenter,
-                                width: MediaQuery.of(context).size.width * 0.7,
+                                width: MediaQuery.of(context).size.width * 0.6,
                                 child: Padding(
                                     padding:
                                         EdgeInsets.only(left: 20, bottom: 10),
                                     child: SizedBox(
-                                      width: 500,
+                                      width: 200,
                                       child: ListTile(
                                           //  Hijrii
                                           title: Text(
@@ -280,20 +286,16 @@ class _TodaySectionState extends State<TodaySection> {
                                                   fontSize: 20)),
                                           // date
                                           subtitle: Center(
-                                              child: Obx(() => Text(
-                                                    _todayController.user.value
-                                                                .currentDate ==
-                                                            null
-                                                        ? DateFormat(
-                                                                'yyyy-MM-dd')
-                                                            .format(
-                                                                DateTime.now())
-                                                            .toString()
-                                                        : '${_todayController.user.value.currentDate}',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14),
-                                                  ))),
+                                              child: Text(
+                                            currentDate == null
+                                                ? DateFormat('yyyy-MM-dd')
+                                                    .format(DateTime.now())
+                                                    .toString()
+                                                : currentDate,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14),
+                                          )),
                                           trailing: Image.asset(
                                             'assets/home_screen/today.png',
                                             height: 30,
@@ -303,11 +305,7 @@ class _TodaySectionState extends State<TodaySection> {
                                     ))),
                             GestureDetector(
                                 onTap: () {
-                                  _todayController.incrmentDate();
-                                  setState(() {
-                                    setstateofdate =
-                                        _todayController.user.value.currentDate;
-                                  });
+                                  incrmentDate();
                                 },
                                 child: Container(
                                     alignment: Alignment.centerRight,
@@ -318,6 +316,92 @@ class _TodaySectionState extends State<TodaySection> {
                                     ))),
                           ],
                         )),
+
+                    // hijrii BAr With Date
+                    // Container(
+                    //     height: orientation == Orientation.portrait
+                    //         ? MediaQuery.of(context).size.height * 0.1
+                    //         : MediaQuery.of(context).size.height * 0.14,
+                    //     color: HexColor('#2c2b3b'),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //       children: [
+                    //         GestureDetector(
+                    //           child: Container(
+                    //               alignment: Alignment.centerLeft,
+                    //               child: Icon(
+                    //                 Icons.arrow_back_ios,
+                    //                 color: HexColor('#16a884'),
+                    //                 size: 30,
+                    //               )),
+                    //           onTap: () {
+                    //             _todayController.decrementDate();
+                    //             setState(() {
+                    //               setstateofdate =
+                    //                   _todayController.user.value.currentDate;
+                    //             });
+                    //           },
+                    //         ),
+                    //         Container(
+                    //             alignment: Alignment.topCenter,
+                    //             width: MediaQuery.of(context).size.width * 0.6,
+                    //             child: Padding(
+                    //                 padding:
+                    //                     EdgeInsets.only(left: 10, bottom: 10),
+                    //                 child: SizedBox(
+                    //                   width: 200,
+                    //                   child: ListTile(
+                    //                       //  Hijrii
+                    //                       title: Text(
+                    //                           snapshot.data.data.date.hijri
+                    //                                   .month.en +
+                    //                               ' ' +
+                    //                               snapshot.data.data.date.hijri
+                    //                                   .year,
+                    //                           style: TextStyle(
+                    //                               color: Colors.white,
+                    //                               fontSize: 20)),
+                    //                       // date
+                    //                       subtitle: Center(
+                    //                           child: Obx(() => Text(
+                    //                                 _todayController.user.value
+                    //                                             .currentDate ==
+                    //                                         null
+                    //                                     ? DateFormat(
+                    //                                             'yyyy-MM-dd')
+                    //                                         .format(
+                    //                                             DateTime.now())
+                    //                                         .toString()
+                    //                                     : '${_todayController.user.value.currentDate}',
+                    //                                 style: TextStyle(
+                    //                                     color: Colors.white,
+                    //                                     fontSize: 14),
+                    //                               ))),
+                    //                       trailing: Image.asset(
+                    //                         'assets/home_screen/today.png',
+                    //                         height: 30,
+                    //                         width: 20,
+                    //                         color: HexColor('#16a884'),
+                    //                       )),
+                    //                 ))),
+                    //         GestureDetector(
+                    //             onTap: () {
+                    //               _todayController.incrmentDate();
+                    //               setState(() {
+                    //                 setstateofdate =
+                    //                     _todayController.user.value.currentDate;
+                    //               });
+                    //             },
+                    //             child: Container(
+                    //                 alignment: Alignment.centerRight,
+                    //                 child: Icon(
+                    //                   Icons.arrow_forward_ios,
+                    //                   color: HexColor('#16a884'),
+                    //                   size: 30,
+                    //                 ))),
+                    //       ],
+                    //     )),
+
                     Container(
                         height: orientation == Orientation.portrait
                             ? MediaQuery.of(context).size.height * 0.46
