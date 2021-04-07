@@ -316,92 +316,6 @@ class _TodaySectionState extends State<TodaySection> {
                                     ))),
                           ],
                         )),
-
-                    // hijrii BAr With Date
-                    // Container(
-                    //     height: orientation == Orientation.portrait
-                    //         ? MediaQuery.of(context).size.height * 0.1
-                    //         : MediaQuery.of(context).size.height * 0.14,
-                    //     color: HexColor('#2c2b3b'),
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //       children: [
-                    //         GestureDetector(
-                    //           child: Container(
-                    //               alignment: Alignment.centerLeft,
-                    //               child: Icon(
-                    //                 Icons.arrow_back_ios,
-                    //                 color: HexColor('#16a884'),
-                    //                 size: 30,
-                    //               )),
-                    //           onTap: () {
-                    //             _todayController.decrementDate();
-                    //             setState(() {
-                    //               setstateofdate =
-                    //                   _todayController.user.value.currentDate;
-                    //             });
-                    //           },
-                    //         ),
-                    //         Container(
-                    //             alignment: Alignment.topCenter,
-                    //             width: MediaQuery.of(context).size.width * 0.6,
-                    //             child: Padding(
-                    //                 padding:
-                    //                     EdgeInsets.only(left: 10, bottom: 10),
-                    //                 child: SizedBox(
-                    //                   width: 200,
-                    //                   child: ListTile(
-                    //                       //  Hijrii
-                    //                       title: Text(
-                    //                           snapshot.data.data.date.hijri
-                    //                                   .month.en +
-                    //                               ' ' +
-                    //                               snapshot.data.data.date.hijri
-                    //                                   .year,
-                    //                           style: TextStyle(
-                    //                               color: Colors.white,
-                    //                               fontSize: 20)),
-                    //                       // date
-                    //                       subtitle: Center(
-                    //                           child: Obx(() => Text(
-                    //                                 _todayController.user.value
-                    //                                             .currentDate ==
-                    //                                         null
-                    //                                     ? DateFormat(
-                    //                                             'yyyy-MM-dd')
-                    //                                         .format(
-                    //                                             DateTime.now())
-                    //                                         .toString()
-                    //                                     : '${_todayController.user.value.currentDate}',
-                    //                                 style: TextStyle(
-                    //                                     color: Colors.white,
-                    //                                     fontSize: 14),
-                    //                               ))),
-                    //                       trailing: Image.asset(
-                    //                         'assets/home_screen/today.png',
-                    //                         height: 30,
-                    //                         width: 20,
-                    //                         color: HexColor('#16a884'),
-                    //                       )),
-                    //                 ))),
-                    //         GestureDetector(
-                    //             onTap: () {
-                    //               _todayController.incrmentDate();
-                    //               setState(() {
-                    //                 setstateofdate =
-                    //                     _todayController.user.value.currentDate;
-                    //               });
-                    //             },
-                    //             child: Container(
-                    //                 alignment: Alignment.centerRight,
-                    //                 child: Icon(
-                    //                   Icons.arrow_forward_ios,
-                    //                   color: HexColor('#16a884'),
-                    //                   size: 30,
-                    //                 ))),
-                    //       ],
-                    //     )),
-
                     Container(
                         height: orientation == Orientation.portrait
                             ? MediaQuery.of(context).size.height * 0.46
@@ -518,3 +432,89 @@ class _TodaySectionState extends State<TodaySection> {
             ]));
   }
 }
+
+// Rough Code::;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// hijrii BAr With Date
+// Container(
+//     height: orientation == Orientation.portrait
+//         ? MediaQuery.of(context).size.height * 0.1
+//         : MediaQuery.of(context).size.height * 0.14,
+//     color: HexColor('#2c2b3b'),
+//     child: Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//       children: [
+//         GestureDetector(
+//           child: Container(
+//               alignment: Alignment.centerLeft,
+//               child: Icon(
+//                 Icons.arrow_back_ios,
+//                 color: HexColor('#16a884'),
+//                 size: 30,
+//               )),
+//           onTap: () {
+//             _todayController.decrementDate();
+//             setState(() {
+//               setstateofdate =
+//                   _todayController.user.value.currentDate;
+//             });
+//           },
+//         ),
+//         Container(
+//             alignment: Alignment.topCenter,
+//             width: MediaQuery.of(context).size.width * 0.6,
+//             child: Padding(
+//                 padding:
+//                     EdgeInsets.only(left: 10, bottom: 10),
+//                 child: SizedBox(
+//                   width: 200,
+//                   child: ListTile(
+//                       //  Hijrii
+//                       title: Text(
+//                           snapshot.data.data.date.hijri
+//                                   .month.en +
+//                               ' ' +
+//                               snapshot.data.data.date.hijri
+//                                   .year,
+//                           style: TextStyle(
+//                               color: Colors.white,
+//                               fontSize: 20)),
+//                       // date
+//                       subtitle: Center(
+//                           child: Obx(() => Text(
+//                                 _todayController.user.value
+//                                             .currentDate ==
+//                                         null
+//                                     ? DateFormat(
+//                                             'yyyy-MM-dd')
+//                                         .format(
+//                                             DateTime.now())
+//                                         .toString()
+//                                     : '${_todayController.user.value.currentDate}',
+//                                 style: TextStyle(
+//                                     color: Colors.white,
+//                                     fontSize: 14),
+//                               ))),
+//                       trailing: Image.asset(
+//                         'assets/home_screen/today.png',
+//                         height: 30,
+//                         width: 20,
+//                         color: HexColor('#16a884'),
+//                       )),
+//                 ))),
+//         GestureDetector(
+//             onTap: () {
+//               _todayController.incrmentDate();
+//               setState(() {
+//                 setstateofdate =
+//                     _todayController.user.value.currentDate;
+//               });
+//             },
+//             child: Container(
+//                 alignment: Alignment.centerRight,
+//                 child: Icon(
+//                   Icons.arrow_forward_ios,
+//                   color: HexColor('#16a884'),
+//                   size: 30,
+//                 ))),
+//       ],
+//     )),
