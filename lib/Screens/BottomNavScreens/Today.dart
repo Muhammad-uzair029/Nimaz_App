@@ -62,8 +62,10 @@ class _TodaySectionState extends State<TodaySection> {
     } else {
       time = "${two.difference(one)}".substring(0, 4);
     }
+
     getTheTime = time.toString();
     print("Gettted Time::");
+    print(getTheTime);
     return time;
   }
 
@@ -125,6 +127,25 @@ class _TodaySectionState extends State<TodaySection> {
     return formatted;
   }
 
+  // Date Picker
+  DateTime nowDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+        context: context,
+        initialDate: nowDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2050));
+    if (pickedDate != null && pickedDate != nowDate)
+      setState(() {
+        // nowDate = pickedDate;
+        currentDate = datetimeFormatter(pickedDate);
+      });
+
+    print("Picked Date::::::::::::::::::::::::::;");
+    print(currentDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -147,13 +168,17 @@ class _TodaySectionState extends State<TodaySection> {
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
+                    // "19:50",
                     snapshot.data.data.timings.isha);
                 _todayController.getNimaz(
                     snapshot.data.data.timings.fajr,
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
-                    snapshot.data.data.timings.isha);
+                    snapshot.data.data.timings.isha
+                    // "19:50",
+
+                    );
                 return Container(
                     child: Column(
                   children: <Widget>[
@@ -225,7 +250,7 @@ class _TodaySectionState extends State<TodaySection> {
                                                             snapshot.data.data
                                                                 .timings.isha,
                                                           )
-                                                        : getTheTime.toString(),
+                                                        : getTheTime,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 30))),
                             SizedBox(
@@ -267,41 +292,47 @@ class _TodaySectionState extends State<TodaySection> {
                             ),
                             Container(
                                 alignment: Alignment.topCenter,
-                                width: MediaQuery.of(context).size.width * 0.6,
+                                width: MediaQuery.of(context).size.width * 0.63,
                                 child: Padding(
                                     padding:
-                                        EdgeInsets.only(left: 20, bottom: 10),
+                                        EdgeInsets.only(left: 10, bottom: 32),
                                     child: SizedBox(
                                       width: 200,
                                       child: ListTile(
-                                          //  Hijrii
-                                          title: Text(
-                                              snapshot.data.data.date.hijri
-                                                      .month.en +
-                                                  ' ' +
-                                                  snapshot.data.data.date.hijri
-                                                      .year,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20)),
-                                          // date
-                                          subtitle: Center(
-                                              child: Text(
-                                            currentDate == null
-                                                ? DateFormat('yyyy-MM-dd')
-                                                    .format(DateTime.now())
-                                                    .toString()
-                                                : currentDate,
+                                        //  Hijrii
+                                        title: Text(
+                                            snapshot.data.data.date.hijri.month
+                                                    .en +
+                                                ' ' +
+                                                snapshot
+                                                    .data.data.date.hijri.year,
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 14),
-                                          )),
-                                          trailing: Image.asset(
-                                            'assets/home_screen/today.png',
-                                            height: 30,
-                                            width: 20,
-                                            color: HexColor('#16a884'),
-                                          )),
+                                                fontSize: 20)),
+                                        // date
+                                        subtitle: Center(
+                                            child: Text(
+                                          currentDate == null
+                                              ? DateFormat('yyyy-MM-dd')
+                                                  .format(DateTime.now())
+                                                  .toString()
+                                              : currentDate,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14),
+                                        )),
+                                        trailing: GestureDetector(
+                                            child: Image.asset(
+                                          'assets/home_screen/today.png',
+                                          height: 30,
+                                          width: 20,
+                                          color: HexColor('#16a884'),
+                                        )),
+                                        onTap: () {
+                                          _selectDate(context);
+                                          setState(() {});
+                                        },
+                                      ),
                                     ))),
                             GestureDetector(
                                 onTap: () {
@@ -376,13 +407,7 @@ class _TodaySectionState extends State<TodaySection> {
     String alaramIconTime,
   ) {
     final _todayController = Get.find<TodayController>();
-    // timer = Timer.periodic(Duration(minutes: 1), (Timer t) async {
-    //   DateTime now = DateTime.now();
 
-    //   String formattedTime = DateFormat.Hm().format(now);
-    //   print("Notification Formatted Dates");
-    //   print(formattedTime);
-    // });
     return Container(
         padding: EdgeInsets.all(5.0),
         margin: EdgeInsets.symmetric(vertical: 10.0),

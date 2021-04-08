@@ -1,4 +1,5 @@
 import 'package:Nimaz_App_Demo/Notifiction/notificationPlugin.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -14,13 +15,14 @@ class User {
   String getminutes;
 
   String showNimazTime;
-
+  String pickDate;
   User(
       {this.currentDate,
       this.formattedTime,
       this.nimazName,
       this.getminutes,
-      this.showNimazTime});
+      this.showNimazTime,
+      this.pickDate});
 }
 
 class TodayController extends GetxController {
@@ -30,12 +32,9 @@ class TodayController extends GetxController {
   String showNimaz;
   String nameofNimaz;
   static final DateTime nowDate = DateTime.now();
-  // String currentDate = nowDate.toIso8601String();
-  // var user = User(currentDate: nowDate.toIso8601String()).obs;
-  // var user1 =
-  //     User(nimazName: "Aachman").obs; // declare just like any other variable
-// on the controller file
-  final user = User(getminutes: '23', nimazName: 'wer', showNimazTime: '').obs;
+  final user =
+      User(getminutes: '23', nimazName: 'wer', showNimazTime: '', pickDate: '')
+          .obs;
 
 // calling the model
   Data list = new Data();
@@ -191,6 +190,20 @@ class TodayController extends GetxController {
     print("Assigned nimaz");
     print(showNimaz);
     // print(user().nimazName);
+  }
+
+  // Date Pciker
+  DateTime currentDate = DateTime.now();
+
+  void selectDate() async {
+    final DateTime pickedDate = await showDatePicker(
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2050));
+    if (pickedDate != null && pickedDate != currentDate)
+      user(User(pickDate: pickedDate.toString()));
+    print("This is the Picked Date");
+    print(pickedDate);
   }
 }
 

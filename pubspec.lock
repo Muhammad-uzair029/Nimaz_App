@@ -90,13 +90,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.5.1"
-  flutter_countdown_timer:
+  flutter_datetime_picker:
     dependency: "direct main"
     description:
-      name: flutter_countdown_timer
+      name: flutter_datetime_picker
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.0.1"
+    version: "1.5.0"
   flutter_local_notifications:
     dependency: "direct main"
     description:
