@@ -45,6 +45,8 @@ class _TodaySectionState extends State<TodaySection> {
 
   String delayNimazTime(DateTime now, String delayNimazTime) {
     // DateTime now = DateTime.now();
+    print("Deay Time is ::");
+    print(delayNimazTime);
     String todayDate1 = DateFormat.Hm().format(now);
     var format = DateFormat.Hm();
     // Fajar Section
@@ -61,7 +63,7 @@ class _TodaySectionState extends State<TodaySection> {
       time = "${two.difference(one)}".substring(0, 4);
     }
     getTheTime = time.toString();
-
+    print("Gettted Time::");
     return time;
   }
 
@@ -142,14 +144,12 @@ class _TodaySectionState extends State<TodaySection> {
               if (snapshot.hasData) {
                 _todayController.notificationPeriodicTimer(
                     snapshot.data.data.timings.fajr,
-                    // "24:12",
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
                     snapshot.data.data.timings.isha);
                 _todayController.getNimaz(
                     snapshot.data.data.timings.fajr,
-                    // "23:12",
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,

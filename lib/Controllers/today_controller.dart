@@ -81,7 +81,7 @@ class TodayController extends GetxController {
         user(User(nimazName: 'Dhuhr'));
       }
       if (user().formattedTime == zohar) {
-        await notificationPlugin.showNotification('Zohar', 'Zohar');
+        await notificationPlugin.showNotification('Dhuhr', 'Dhuhr');
         user(User(nimazName: 'Asr'));
       }
       if (user().formattedTime == asr) {
@@ -172,9 +172,9 @@ class TodayController extends GetxController {
     index_number == 0
         ? user(User(nimazName: 'Fajar'))
         : index_number == 1
-            ? user(User(nimazName: 'Zohar'))
+            ? user(User(nimazName: 'Dhuhr'))
             : index_number == 2
-                ? user(User(nimazName: 'Asar'))
+                ? user(User(nimazName: 'Asr'))
                 : index_number == 3
                     ? user(User(nimazName: 'Maghrib'))
                     : index_number == 4
