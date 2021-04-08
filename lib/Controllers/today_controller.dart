@@ -191,20 +191,6 @@ class TodayController extends GetxController {
     print(showNimaz);
     // print(user().nimazName);
   }
-
-  // Date Pciker
-  DateTime currentDate = DateTime.now();
-
-  void selectDate() async {
-    final DateTime pickedDate = await showDatePicker(
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(2050));
-    if (pickedDate != null && pickedDate != currentDate)
-      user(User(pickDate: pickedDate.toString()));
-    print("This is the Picked Date");
-    print(pickedDate);
-  }
 }
 
 //  delay time settingss by Difference Rough Code
