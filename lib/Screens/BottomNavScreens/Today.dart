@@ -1,4 +1,5 @@
 import 'package:Nimaz_App_Demo/Controllers/today_controller.dart';
+import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
 import 'package:Nimaz_App_Demo/Notifiction/notificationPlugin.dart';
 
 import 'package:Nimaz_App_Demo/Screens/MainPage/MainScreen.dart';
@@ -151,7 +152,6 @@ class _TodaySectionState extends State<TodaySection> {
     Orientation orientation = MediaQuery.of(context).orientation;
     final _todayController = Get.put(TodayController());
     _todayController.onStart();
-    // getTheTime = _todayController.user.value.getTheTime.toString();
 
     return Scaffold(
       body: Stack(
@@ -168,16 +168,18 @@ class _TodaySectionState extends State<TodaySection> {
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
-                    // "19:50",
-                    snapshot.data.data.timings.isha);
+                    // "18:34",
+                    snapshot.data.data.timings.isha
+                    // "19:13",
+                    );
                 _todayController.getNimaz(
                     snapshot.data.data.timings.fajr,
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
+                    // "18:34",
                     snapshot.data.data.timings.isha
-                    // "19:50",
-
+                    // "19:13",
                     );
                 return Container(
                     child: Column(
@@ -347,6 +349,7 @@ class _TodaySectionState extends State<TodaySection> {
                                     ))),
                           ],
                         )),
+                    // Body Part that Contains Nima name,time,alarm settings,
                     Container(
                         height: orientation == Orientation.portrait
                             ? MediaQuery.of(context).size.height * 0.46
@@ -407,54 +410,96 @@ class _TodaySectionState extends State<TodaySection> {
     String alaramIconTime,
   ) {
     final _todayController = Get.find<TodayController>();
-
+    // String NotificationIconiamge;
+    // nimazName== 'Fajr'?NotificationIconiamge=
     return Container(
         padding: EdgeInsets.all(5.0),
         margin: EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              // Fetch the nimaz name and Shows Icon
-              Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Row(children: [
-                    Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: ImageIcon(
-                          AssetImage(leadingicon),
-                          size: 25,
-                          color: Colors.white,
-                          // color: Color(0xFF3A5A98),
-                        )),
-                    Text(
-                      nimazName,
-                      style: TextStyle(color: Colors.white, fontSize: 17),
-                    ),
-                  ])),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
+                Widget>[
+          // Fetch the nimaz name and Shows Icon
+          Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Row(children: [
+                Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child: ImageIcon(
+                      AssetImage(leadingicon),
+                      size: 25,
+                      color: Colors.white,
+                      // color: Color(0xFF3A5A98),
+                    )),
+                Text(
+                  nimazName,
+                  style: TextStyle(color: Colors.white, fontSize: 17),
+                ),
+              ])),
 
-              // Alaram bell notification Icons With Time
+          // Alaram bell notification Icons With Time
 
-              Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Row(children: [
-                    Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: Text(nimazTime,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 17))),
-                    Obx(() => Container(
-                          child: _todayController.user.value.formattedTime ==
-                                  alaramIconTime
-                              ? ImageIcon(
-                                  AssetImage(
-                                      'assets/home_screen/notification.png'),
-                                  size: 25,
-                                  color: HexColor('#16a884'),
-                                )
-                              : Container(),
-                        )),
-                  ])),
-            ]));
+          Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Row(children: [
+                Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child: Text(nimazTime,
+                        style: TextStyle(color: Colors.white, fontSize: 17))),
+                Obx(() => (nimazName == 'Fajr')
+                    ? notifiationIcon('Fajr', _todayController.fajrflag)
+                    : (nimazName == 'Dhuhr')
+                        ? notifiationIcon('Dhuhr', _todayController.dhuhrflag)
+                        : (nimazName == 'Asr')
+                            ? notifiationIcon('Asr', _todayController.asrflag)
+                            : (nimazName == 'Maghrib')
+                                ? notifiationIcon(
+                                    'Maghrib', _todayController.maghribflag)
+                                : (nimazName == 'Isha')
+                                    ? notifiationIcon(
+                                        'Isha', _todayController.ishaflag)
+                                    : ImageIcon(
+                                        AssetImage(
+                                            'assets/home_screen/notification.png'),
+                                        size: 25,
+                                        color: HexColor('#16a884'),
+                                      )),
+              ])),
+        ]));
+  }
+
+// Notification Icon Enable and Disable Widget
+  Widget notifiationIcon(String nimazName, RxInt iconChangeFlag) {
+    final _todayController = Get.find<TodayController>();
+    return GestureDetector(
+        child: iconChangeFlag == 0
+            ? ImageIcon(
+                AssetImage('assets/home_screen/notification.png'),
+                size: 25,
+                color: HexColor('#16a884'),
+              )
+            : ImageIcon(
+                AssetImage('assets/home_screen/notification.png'),
+                size: 25,
+                color: HexColor('#2c2b3b'),
+              ),
+        onTap: () {
+          (nimazName == 'Fajr')
+              ? _todayController.flagchangingFunction(
+                  'Fajr', _todayController.fajrflag)
+              : (nimazName == 'Dhuhr')
+                  ? _todayController.flagchangingFunction(
+                      'Dhuhr', _todayController.dhuhrflag)
+                  : (nimazName == 'Asr')
+                      ? _todayController.flagchangingFunction(
+                          'Asr', _todayController.asrflag)
+                      : (nimazName == 'Maghrib')
+                          ? _todayController.flagchangingFunction(
+                              'Maghrib', _todayController.maghribflag)
+                          : (nimazName == 'Isha')
+                              ? _todayController.flagchangingFunction(
+                                  'Isha', _todayController.ishaflag)
+                              : 'asd';
+        });
   }
 }
 

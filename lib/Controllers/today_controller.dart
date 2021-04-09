@@ -16,30 +16,44 @@ class User {
 
   String showNimazTime;
   String pickDate;
-  User(
-      {this.currentDate,
-      this.formattedTime,
-      this.nimazName,
-      this.getminutes,
-      this.showNimazTime,
-      this.pickDate});
+  // String maghribflag;
+  User({
+    this.currentDate,
+    this.formattedTime,
+    this.nimazName,
+    this.getminutes,
+    this.showNimazTime,
+    this.pickDate,
+  });
 }
 
 class TodayController extends GetxController {
   static double pLat = 0.0;
   static double pLong = 0.0;
+  RxInt fajrflag = 0.obs;
+  RxInt dhuhrflag = 0.obs;
+  RxInt asrflag = 0.obs;
+  RxInt maghribflag = 0.obs;
+  RxInt ishaflag = 0.obs;
 
   String showNimaz;
   String nameofNimaz;
   static final DateTime nowDate = DateTime.now();
-  final user =
-      User(getminutes: '23', nimazName: 'wer', showNimazTime: '', pickDate: '')
-          .obs;
+  final user = User(
+    getminutes: '23',
+    nimazName: 'wer',
+    showNimazTime: '',
+    pickDate: '',
+  ).obs;
 
 // calling the model
   Data list = new Data();
 
   Future getnimazSchedule(String datetime) async {
+    // user(User(maghribflag: 'true'));
+    // print("Thi is flag:::::::::::::::::::::::::::::::::::::");
+    // print(user().maghribflag);
+
     // uuse for get current location
     final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium);
@@ -67,6 +81,11 @@ class TodayController extends GetxController {
     return list;
   }
 
+// ClosNitification BEll For nimaz
+// void closeNificationRing(){
+//   maghribflag.value=
+// }
+
 // Nimaz time controller
 //
   Timer timer;
@@ -76,24 +95,34 @@ class TodayController extends GetxController {
       // print(DateFormat.Hm().format(now));
       user(User(formattedTime: DateFormat.Hm().format(now)));
       if (user().formattedTime == fajar) {
-        await notificationPlugin.showNotification('Fajar', 'Fajar');
+        if (fajrflag.value == 0) {
+          await notificationPlugin.showNotification('Fajar', 'Fajar');
+        }
         user(User(nimazName: 'Dhuhr'));
       }
       if (user().formattedTime == zohar) {
-        await notificationPlugin.showNotification('Dhuhr', 'Dhuhr');
-        user(User(nimazName: 'Asr'));
+        if (dhuhrflag.value == 0) {
+          await notificationPlugin.showNotification('Dhuhr', 'Dhuhr');
+          user(User(nimazName: 'Asr'));
+        }
       }
       if (user().formattedTime == asr) {
-        await notificationPlugin.showNotification('asr', 'asr');
-
+        if (asrflag.value == 0) {
+          await notificationPlugin.showNotification('asr', 'asr');
+        }
         user(User(nimazName: 'Maghrib'));
       }
       if (user().formattedTime == maghrib) {
-        await notificationPlugin.showNotification('maghrib', 'maghrib');
+        if (maghribflag.value == 0) {
+          await notificationPlugin.showNotification('maghrib', 'maghrib');
+        }
+
         user(User(nimazName: 'Isha'));
       }
       if (user().formattedTime == isha) {
-        await notificationPlugin.showNotification('isha', 'Isha');
+        if (ishaflag.value == 0) {
+          await notificationPlugin.showNotification('isha', 'Isha');
+        }
         user(User(nimazName: 'Fajar'));
       }
     });
@@ -143,7 +172,7 @@ class TodayController extends GetxController {
           diff = diff.substring(0, 1);
         }
         print(int.parse(diff));
-        if ((int.parse(diff)) <= 0) {
+        if ((int.parse(diff)) < 0) {
           diff = '12';
         }
         nimaz_Diff[i] = diff;
@@ -190,6 +219,19 @@ class TodayController extends GetxController {
     print("Assigned nimaz");
     print(showNimaz);
     // print(user().nimazName);
+  }
+
+// Notification Flag Changer Function;;
+  void flagchangingFunction(String nimazName, RxInt flagValue) {
+    print("tapeddddddddddddddddddddddddddddddddddddd");
+    if (flagValue.value == 0) {
+      print(nimazName + ":::::::::Maghri Tappedd:");
+      flagValue.value = 1;
+    } else {
+      flagValue.value = 0;
+    }
+    print("Thi is flag:::::::::::::::::::::::::::::::::::::");
+    print(flagValue.value);
   }
 }
 
