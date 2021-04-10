@@ -97,32 +97,37 @@ class TodayController extends GetxController {
       user(User(formattedTime: DateFormat.Hm().format(now)));
       if (user().formattedTime == fajar) {
         if (fajrflag.value == 0) {
-          await notificationPlugin.showNotification('Fajar', 'Fajar');
+          await notificationPlugin.showNotification('Fajar',
+              'Its Fajar Time. Allah Says: Call upon me I will responed you');
         }
         user(User(nimazName: 'Dhuhr'));
       }
       if (user().formattedTime == zohar) {
         if (dhuhrflag.value == 0) {
-          await notificationPlugin.showNotification('Dhuhr', 'Dhuhr');
+          await notificationPlugin.showNotification('Dhuhr',
+              'Its Dhuhr Time. Allah Says: Call upon me I will responed you');
           user(User(nimazName: 'Asr'));
         }
       }
       if (user().formattedTime == asr) {
         if (asrflag.value == 0) {
-          await notificationPlugin.showNotification('asr', 'asr');
+          await notificationPlugin.showNotification('Asr',
+              'Its Asr Time. Allah Says: Call upon me I will responed you');
         }
         user(User(nimazName: 'Maghrib'));
       }
       if (user().formattedTime == maghrib) {
         if (maghribflag.value == 0) {
-          await notificationPlugin.showNotification('maghrib', 'maghrib');
+          await notificationPlugin.showNotification('Maghrib',
+              'Its Maghrib Time. Allah Says: Call upon me I will responed you');
         }
 
         user(User(nimazName: 'Isha'));
       }
       if (user().formattedTime == isha) {
         if (ishaflag.value == 0) {
-          await notificationPlugin.showNotification('isha', 'Isha');
+          await notificationPlugin.showNotification('Isha',
+              'Its Isha Time. Allah Says: Call upon me I will responed you');
         }
         user(User(nimazName: 'Fajar'));
       }
@@ -170,22 +175,16 @@ class TodayController extends GetxController {
       var timeNow = format.parse(nowTime);
 
       String diff = "${nimazlist[i].difference(timeNow)}".substring(0, 2);
-      // String minutesdiff =
-      //     "${nimazlist[i].difference(timeNow)}".substring(3, 5);
       if (diff != null) {
         if (diff.contains(':')) {
           diff = diff.substring(0, 1);
         }
-        // if (minutesdiff.contains(':')) {
-        //   minutesdiff = minutesdiff.substring(0, 1);
-        // }
+
         print(int.parse(diff));
 
         nimaz_Diff[i] = diff;
-        // nimaz_minutes_Diff[i] = minutesdiff.toString();
       } else {
         nimaz_Diff[i] = diff;
-        // nimaz_minutes_Diff[i] = minutesdiff.toString();
       }
     }
 

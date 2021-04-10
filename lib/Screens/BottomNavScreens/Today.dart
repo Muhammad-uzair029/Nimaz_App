@@ -194,19 +194,13 @@ class _TodaySectionState extends State<TodaySection> {
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
-                    // "18:34",
-                    snapshot.data.data.timings.isha
-                    // "19:13",
-                    );
+                    snapshot.data.data.timings.isha);
                 _todayController.getNimaz(
                     snapshot.data.data.timings.fajr,
                     snapshot.data.data.timings.dhuhr,
                     snapshot.data.data.timings.asr,
                     snapshot.data.data.timings.maghrib,
-                    // "18:34",
-                    snapshot.data.data.timings.isha
-                    // "19:13",
-                    );
+                    snapshot.data.data.timings.isha);
                 return Container(
                     child: Column(
                   children: <Widget>[
@@ -524,7 +518,7 @@ class _TodaySectionState extends State<TodaySection> {
                           : (nimazName == 'Isha')
                               ? _todayController.flagchangingFunction(
                                   'Isha', _todayController.ishaflag)
-                              : 'asd';
+                              : 'Null';
         });
   }
 }
