@@ -51,10 +51,12 @@ class _TodaySectionState extends State<TodaySection> {
     String todayDate1 = DateFormat.Hm().format(now);
     var format = DateFormat.Hm();
     // Fajar Section
+
     DateTime todayDate = DateFormat('HH:mm').parse(delayNimazTime);
     String todayDate2 = DateFormat.Hm().format(todayDate);
     var one = format.parse(todayDate1);
     var two = format.parse(todayDate2);
+
     // String ss = (two.difference(one).toString()).substring(0, 1);
     String time = "${two.difference(one)}".substring(0, 5);
 
@@ -67,6 +69,30 @@ class _TodaySectionState extends State<TodaySection> {
     getTheTime = time.toString();
     print("Gettted Time::");
     print(getTheTime);
+    String hours, minutes;
+    String dhours, dminutes;
+
+    if (getTheTime.contains('-')) {
+      String todayDate2 = "24:00";
+
+      var two = format.parse(todayDate2);
+      time = "${two.difference(one)}".substring(0, 4);
+      if (time.substring(0, 2).contains(':')) {
+        hours = time.substring(0, 1);
+        minutes = time.substring(2, 4);
+      } else {
+        hours = time.substring(0, 2);
+        minutes = time.substring(2, 4);
+      }
+      print(delayNimazTime.toString().substring(0, 2));
+      dhours = delayNimazTime.toString().substring(0, 2);
+      dminutes = delayNimazTime.toString().substring(3, 5);
+      // Time Designing For Fajar
+      String addhours = (int.parse(hours) + int.parse(dhours)).toString();
+      String addminutes = (int.parse(minutes) + int.parse(dminutes)).toString();
+      String designTime = addhours + ":" + addminutes;
+      time = designTime;
+    }
     return time;
   }
 
