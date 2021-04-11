@@ -90,6 +90,11 @@ class _TodaySectionState extends State<TodaySection> {
       // Time Designing For Fajar
       String addhours = (int.parse(hours) + int.parse(dhours)).toString();
       String addminutes = (int.parse(minutes) + int.parse(dminutes)).toString();
+
+      if (int.parse(addminutes) >= 60) {
+        addhours = (int.parse(addhours) + (1)).toString();
+        addminutes = (int.parse(addminutes) - (60)).toString();
+      }
       String designTime = addhours + ":" + addminutes;
       time = designTime;
     }
@@ -607,4 +612,6 @@ class _TodaySectionState extends State<TodaySection> {
 //                   size: 30,
 //                 ))),
 //       ],
+//     )),
+
 //     )),
