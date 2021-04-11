@@ -96,11 +96,7 @@ class _TodaySectionState extends State<TodaySection> {
       time = designTime;
 
       getTheTime = time.toString();
-      print("Gettted Time::");
-      print(getTheTime);
     }
-    print("this is the Timeeeeeeeeeeeee::::::::::");
-    print(time);
     return time;
   }
 
