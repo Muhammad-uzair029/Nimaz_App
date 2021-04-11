@@ -66,12 +66,9 @@ class _TodaySectionState extends State<TodaySection> {
       time = "${two.difference(one)}".substring(0, 4);
     }
 
-    getTheTime = time.toString();
-    print("Gettted Time::");
-    print(getTheTime);
     String hours, minutes;
     String dhours, dminutes;
-
+    getTheTime = time.toString();
     if (getTheTime.contains('-')) {
       String todayDate2 = "24:00";
 
@@ -97,7 +94,13 @@ class _TodaySectionState extends State<TodaySection> {
       }
       String designTime = addhours + ":" + addminutes;
       time = designTime;
+
+      getTheTime = time.toString();
+      print("Gettted Time::");
+      print(getTheTime);
     }
+    print("this is the Timeeeeeeeeeeeee::::::::::");
+    print(time);
     return time;
   }
 
