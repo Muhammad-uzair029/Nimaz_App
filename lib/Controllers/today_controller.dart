@@ -50,7 +50,7 @@ class TodayController extends GetxController {
 // calling the model
   Data list = new Data();
 
-  Future getnimazSchedule(String datetime) async {
+  Future getnimazSchedule() async {
     // user(User(maghribflag: 'true'));
     // print("Thi is flag:::::::::::::::::::::::::::::::::::::");
     // print(user().maghribflag);
@@ -66,7 +66,7 @@ class TodayController extends GetxController {
     int method = 4; //
     // Api number 1 from the aladhan.com/prayer_time , and I pick 11 uber api
     // bcz its contains the date, Latitude and ongitude that is used for get location
-
+    DateTime datetime = new DateTime.now();
     final url =
         "http://api.aladhan.com/v1/timings/$datetime?latitude=$pLat&longitude=$pLong&method=$method";
 

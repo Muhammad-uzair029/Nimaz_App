@@ -7,7 +7,5 @@ class QuranSection extends StatefulWidget {
 
 class _QuranSectionState extends State<QuranSection> {
   @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
+  Widget build(BuildContext context) {}
 }
