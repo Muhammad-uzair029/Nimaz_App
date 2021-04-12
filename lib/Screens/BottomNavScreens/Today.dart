@@ -131,7 +131,7 @@ class _TodaySectionState extends State<TodaySection> {
 
   var daysFromNow;
   var preDaysFrom;
-  String currentDate;
+  String currentDate = DateTime.now().toString();
   void incrmentDate() {
     incount++;
     var daysFromNow = DateTime.now().add(new Duration(days: incount));
@@ -190,7 +190,7 @@ class _TodaySectionState extends State<TodaySection> {
             color: HexColor("#100F17"),
           ),
           FutureBuilder(
-            future: _todayController.getnimazSchedule(),
+            future: _todayController.getnimazSchedule(currentDate),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 _todayController.notificationPeriodicTimer(
@@ -342,7 +342,9 @@ class _TodaySectionState extends State<TodaySection> {
                                               ? DateFormat('yyyy-MM-dd')
                                                   .format(DateTime.now())
                                                   .toString()
-                                              : currentDate,
+                                              : currentDate.length > 12
+                                                  ? currentDate.substring(0, 11)
+                                                  : currentDate,
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 14),
