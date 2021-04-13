@@ -1,5 +1,6 @@
 import 'package:Nimaz_App_Demo/Notifiction/notificationPlugin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -29,8 +30,8 @@ class User {
 }
 
 class TodayController extends GetxController {
-  static double pLat = 0.0;
-  static double pLong = 0.0;
+  String pLat;
+  String pLong;
   RxInt fajrflag = 0.obs;
   RxInt dhuhrflag = 0.obs;
   RxInt asrflag = 0.obs;
@@ -59,10 +60,10 @@ class TodayController extends GetxController {
     final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium);
 
-    pLat = position.latitude;
-    pLong = position.longitude;
+    pLat = position.latitude.toString();
+    pLong = position.longitude.toString();
 
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
     // method 4 for fatching the region
     int method = 4; //
     // Api number 1 from the aladhan.com/prayer_time , and I pick 11 uber api
@@ -73,9 +74,11 @@ class TodayController extends GetxController {
       datetimes = new DateTime.now();
     }
     final String formatted = formatter.format(datetimes);
-
+    // print(pLat);
+    // print(pLong);
+    // print(formatted);
     final url =
-        "http://api.aladhan.com/v1/timings/$formatted?latitude=$pLat&longitude=$pLong&method=$method";
+        "http://api.aladhan.com/v1/timings/$formatted?latitude=$pLat&longitude=$pLong";
 
     http.Response res = await http.get(Uri.encodeFull(url), headers: {
       "Accept":
