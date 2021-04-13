@@ -25,6 +25,7 @@ class _TodaySectionState extends State<TodaySection> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     Timer.periodic(Duration(minutes: 1), (Timer t) async {
       decrementtheTime();
     });
@@ -137,7 +138,7 @@ class _TodaySectionState extends State<TodaySection> {
     var daysFromNow = DateTime.now().add(new Duration(days: incount));
 
     setState(() {
-      currentDate = datetimeFormatter(daysFromNow);
+      currentDate = daysFromNow.toString();
     });
 
     // return datetimeFormatter(currentDate);
@@ -146,7 +147,7 @@ class _TodaySectionState extends State<TodaySection> {
   void decrementDate() {
     preDaysFrom = DateTime.now().add(new Duration(days: incount--));
     setState(() {
-      currentDate = datetimeFormatter(preDaysFrom);
+      currentDate = preDaysFrom.toString();
     });
     // return datetimeFormatter(currentDate);
   }
@@ -170,10 +171,10 @@ class _TodaySectionState extends State<TodaySection> {
     if (pickedDate != null && pickedDate != nowDate)
       setState(() {
         // nowDate = pickedDate;
-        currentDate = datetimeFormatter(pickedDate);
+        currentDate = pickedDate.toString();
       });
 
-    print("Picked Date::::::::::::::::::::::::::;");
+    print("Picked Date:");
     print(currentDate);
   }
 
