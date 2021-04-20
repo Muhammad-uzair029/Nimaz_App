@@ -4,6 +4,7 @@ import 'package:Nimaz_App_Demo/Bindings/quran_bindings.dart';
 // import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
 import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
 import 'package:Nimaz_App_Demo/Screens/BottomNavScreens/Qibla/Qibla.dart';
+import 'package:Nimaz_App_Demo/fbid.dart';
 import 'package:flutter/material.dart';
 import 'package:Nimaz_App_Demo/Screens/MainPage/MainScreen.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ void main() {
   QuranBinding().dependencies();
   QiblaBindings().dependencies();
 
-  runApp(MyApp());
+  runApp(AdExampleApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
             binding: QuranBinding()),
       ],
       initialRoute: "/MainPage",
-      // home: notification(title: "Fajar", body: "Fajar"),
+      home: notification(title: "Fajar", body: "Fajar"),
     );
   }
 }

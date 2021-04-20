@@ -70,15 +70,15 @@ class TodayController extends GetxController {
     // bcz its contains the date, Latitude and ongitude that is used for get location
     DateTime datetimes;
     datetimes = DateTime.parse(datetime);
-    if (datetime == null) {
+    if (datetimes == null) {
       datetimes = new DateTime.now();
     }
     final String formatted = formatter.format(datetimes);
-    // print(pLat);
-    // print(pLong);
-    // print(formatted);
+    print(pLat);
+    print(pLong);
+    print(formatted);
     final url =
-        "http://api.aladhan.com/v1/timings/$formatted?latitude=$pLat&longitude=$pLong";
+        "http://api.aladhan.com/v1/timings/$formatted?latitude=$pLat&longitude=$pLong&method=2";
 
     http.Response res = await http.get(Uri.encodeFull(url), headers: {
       "Accept":

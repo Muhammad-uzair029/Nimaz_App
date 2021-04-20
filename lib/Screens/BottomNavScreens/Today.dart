@@ -3,6 +3,7 @@ import 'package:Nimaz_App_Demo/Notifiction/Notification.dart';
 import 'package:Nimaz_App_Demo/Notifiction/notificationPlugin.dart';
 
 import 'package:Nimaz_App_Demo/Screens/MainPage/MainScreen.dart';
+import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
@@ -21,10 +22,18 @@ class _TodaySectionState extends State<TodaySection> {
   String getminutesfortext = 'asd';
   String gethoursfortext;
   String getTheTime = "2:44";
+  Widget _currentAd = SizedBox(
+    width: 0.0,
+    height: 0.0,
+  );
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    FacebookAudienceNetwork.init(
+      testingId: "b9f2908b-1a6b-4a5b-b862-ded7ce289e41",
+    );
+    _loadInterstitialAd();
     Timer.periodic(Duration(minutes: 1), (Timer t) async {
       decrementtheTime();
     });
@@ -42,6 +51,40 @@ class _TodaySectionState extends State<TodaySection> {
     print('Payload $payload');
     navigatorKey.currentState
         .push(MaterialPageRoute(builder: (_) => MainPage()));
+  }
+
+  bool _isInterstitialAdLoaded = true;
+  void _loadInterstitialAd() {
+    FacebookInterstitialAd.loadInterstitialAd(
+      placementId:
+          "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617", //"IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617" YOUR_PLACEMENT_ID
+      listener: (result, value) {
+        print(">> FAN > Interstitial Ad: $result --> $value");
+        if (result == InterstitialAdResult.LOADED)
+          _isInterstitialAdLoaded = true;
+
+        /// Once an Interstitial Ad has been dismissed and becomes invalidated,
+        /// load a fresh Ad by calling this function.
+        if (result == InterstitialAdResult.DISMISSED &&
+            value["invalidated"] == true) {
+          _isInterstitialAdLoaded = false;
+          _loadInterstitialAd();
+        }
+      },
+    );
+  }
+
+  _showBannerAd() {
+    setState(() {
+      _currentAd = FacebookBannerAd(
+        placementId:
+            "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047", //testid
+        bannerSize: BannerSize.STANDARD,
+        listener: (result, value) {
+          print("Banner Ad: $result -->  $value");
+        },
+      );
+    });
   }
 
   String delayNimazTime(DateTime now, String delayNimazTime) {
@@ -137,7 +180,7 @@ class _TodaySectionState extends State<TodaySection> {
     var daysFromNow = DateTime.now().add(new Duration(days: incount));
 
     setState(() {
-      currentDate = datetimeFormatter(daysFromNow);
+      currentDate = daysFromNow.toString();
     });
 
     // return datetimeFormatter(currentDate);
@@ -146,7 +189,7 @@ class _TodaySectionState extends State<TodaySection> {
   void decrementDate() {
     preDaysFrom = DateTime.now().add(new Duration(days: incount--));
     setState(() {
-      currentDate = datetimeFormatter(preDaysFrom);
+      currentDate = preDaysFrom.toString();
     });
     // return datetimeFormatter(currentDate);
   }
@@ -170,10 +213,10 @@ class _TodaySectionState extends State<TodaySection> {
     if (pickedDate != null && pickedDate != nowDate)
       setState(() {
         // nowDate = pickedDate;
-        currentDate = datetimeFormatter(pickedDate);
+        currentDate = pickedDate.toString();
       });
 
-    print("Picked Date::::::::::::::::::::::::::;");
+    print("Picked Date:");
     print(currentDate);
   }
 
@@ -423,6 +466,13 @@ class _TodaySectionState extends State<TodaySection> {
               }
             },
           ),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: RaisedButton(
+                  child: Text("asdasd"),
+                  onPressed: () {
+                    _showBannerAd();
+                  })),
         ],
       ),
     );
