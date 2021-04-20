@@ -30,10 +30,14 @@ class _TodaySectionState extends State<TodaySection> {
   void initState() {
     // TODO: implement initState
     super.initState();
+<<<<<<< HEAD
     FacebookAudienceNetwork.init(
       testingId: "b9f2908b-1a6b-4a5b-b862-ded7ce289e41",
     );
     _loadInterstitialAd();
+=======
+
+>>>>>>> 86a460af2bde1eaf49594f6cc339be8f59887402
     Timer.periodic(Duration(minutes: 1), (Timer t) async {
       decrementtheTime();
     });
